@@ -82,6 +82,13 @@ Each Arduino has ...
 
 [modem_init()](https://github.com/naclomi/emojiomi/blob/main/device/firmware/main/main.ino)
 
+The cell modem technology we will use here is called SIM7000. 
+
+Search on **`sim7000 at commands`** to find the Users Manual.
+
+Search on **`sim7000 tcpip`** to find the use case document.
+
+
 See Figure 2 at [this link](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwilrumR5ej7AhU8CjQIHUUCBC8QFnoECA4QAQ&url=https%3A%2F%2Fsimcom.ee%2Fdocuments%2FSIM7000x%2FSIM7000%2520Series_TCPIP_Application%2520Note_V1.01.pdf&usg=AOvVaw3bO5eF1vb4eJi7zgeLCqi8)
 
 Search SIM7000 Series_AT Command Manual
