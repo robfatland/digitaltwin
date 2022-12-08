@@ -56,19 +56,21 @@ clouds in turn may provide some directive guidance back to **A**,
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/ATflow.png" alt="drawing" width="500"/>
 
 
-Library installation: Need info.
+Library installation: Use the IDE Tools > Manage Libraries... menu to start the Library Manager on the left side of the IDE.
+Enter **`DFRobot_SIM7000`** in the search bar and install this library as well as any dependencies per the prompt.
 
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_port_chooser.png" alt="drawing" width="500"/>
 
 
-Upon connecting to the Arduino: Use the Tools > Port menu to connect to the Arduino.
+Connect a laptop USB port to the Arduino USB port.
+After physically connecting to the Arduino: Use the IDE Tools > Port menu to enable the port connection to the Arduino.
 
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_example_sketches.png" alt="drawing" width="500"/>
 
 
-Open an example sketch: Use the File > Examples > DFRobot_SIM7000 menu to select sketch **`DFRobotSIM7000ATTest`**.
+Open an example sketch: Use the IDE File > Examples > DFRobot_SIM7000 menu to select sketch **`DFRobotSIM7000ATTest`**.
 
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_serial_monitor.png" alt="drawing" width="500"/>
@@ -76,7 +78,7 @@ Open an example sketch: Use the File > Examples > DFRobot_SIM7000 menu to select
 
 The IDE has a 'circle and dots' icon at the upper right. Use this to open the Serial Monitor as a panel at the bottom
 of the IDE. Note it is part of a tabbed selector. Configure it to use **Both NL & CR** and **9600 baud**. The monitor
-can now be used to test **`AT`** cellular modem commands interactively. 
+can now be used to test **`AT`** cellular modem commands interactively.
 
 
 
