@@ -4,8 +4,11 @@
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/testbed.png" alt="drawing" width="500"/>
 
 
-The purpose of this repository is to provide a circa-2022 recipe for building a
+This repository provides a circa-2022 recipe for a
 simple sensor with a cellular modem for two-way communication with the cloud.
+The idea is to minimize the need-to-know and place some additional
+context in lateral digressions like
+[this one](https://github.com/robfatland/digitaltwin/tree/main/i).
 
 
 
@@ -14,36 +17,36 @@ simple sensor with a cellular modem for two-way communication with the cloud.
 
 
 Let's suppose we have a light sensor attached to an Arduino analog port.
-This gives us a value from 0 to 255 at a rate up to say kilohertz
-sampling frequency.
-
-Let's further suppose there are
-actually three such units: **A**, **B** and **C**.
-
-
-The goal is to string together ancillary parts and code so that they
-are able to communicate both directly and indirectly.
-
-
-### Direct communication
-
-Each Arduino has a laser diode mounted on a servo in addition to a CdS 
-light sensor. 
-
-### Indirect communication
-
-Each Arduino has ...
+(See testbed image above.)
+This port can be read to yield a value from 0 to 255 indicating how much
+light is hitting the sensor. The sampling frequency can be anywhere 
+up to say kilohertz. Let's further suppose there are
+actually three such units: **A**, **B** and **C** and that each has
+a laser diode mounted on a servo motor. The initial idea (for a
+marginally non-trivial system) is to set each device up to hit the
+light sensor of the next in a triangle; and to have them report to
+the Amazon, Google and Azure clouds their current status. The 
+clouds in turn may provide some directive guidance back to **A**, 
+**B** and **C**.
 
 
-### refs
 
-[modem_init()](https://github.com/naclomi/emojiomi/blob/main/device/firmware/main/main.ino)
+### References
 
-The cell modem technology we will use here is called SIM7000. 
+- The cellular modem used here is available from DFRobot for $30
+    - Product name: SIM7000 Arduino NB-IoT/LTE/GPRS expansion shield
+    - [Product link](https://wiki.dfrobot.com/SIM7000_Arduino_NB-IoT_LTE_GPRS_Expansion_Shield_SKU__DFR0505_DFR0572)
+    - Use [LTE](https://en.wikipedia.org/wiki/LTE_(telecommunication)): A wireless broadband communication standard for mobile devices
+        - Does not use GNSS (navigation system)
+- Modem control code and documentation
+    - Search **`sim7000 AT commands`** > [User Manual](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiXu--4zOr7AhX-MDQIHbWzAmMQFnoECBAQAQ&url=https%3A%2F%2Fsimcom.ee%2Fdocuments%2FSIM7000x%2FSIM7000%2520Series_AT%2520Command%2520Manual_V1.04.pdf&usg=AOvVaw3YaMs0QRpt9-A082_i6Ky3)
+    - Search **`sim7000 tcpip`** > [Use case document]()
 
-Search on **`sim7000 at commands`** to find the Users Manual.
+    - See the function [modem_init()](https://github.com/naclomi/emojiomi/blob/main/device/firmware/main/main.ino)
 
-Search on **`sim7000 tcpip`** to find the use case document.
+
+
+
 
 
 See Figure 2 at [this link](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwilrumR5ej7AhU8CjQIHUUCBC8QFnoECA4QAQ&url=https%3A%2F%2Fsimcom.ee%2Fdocuments%2FSIM7000x%2FSIM7000%2520Series_TCPIP_Application%2520Note_V1.01.pdf&usg=AOvVaw3bO5eF1vb4eJi7zgeLCqi8)
