@@ -55,3 +55,11 @@ clouds in turn may provide some directive guidance back to **A**,
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/ATflow.png" alt="drawing" width="500"/>
 
+
+Library installation: Need info.
+
+
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_port_chooser.png" alt="drawing" width="500"/>
+
+
+Upon connecting to the Arduino: Tools > Port to connect to the Arduino.
