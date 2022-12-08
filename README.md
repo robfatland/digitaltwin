@@ -71,6 +71,9 @@ After physically connecting to the Arduino: Use the IDE Tools > Port menu to ena
 
 
 Open an example sketch: Use the IDE File > Examples > DFRobot_SIM7000 menu to select sketch **`DFRobotSIM7000ATTest`**.
+This sketch is the model for how to build cellular modem interactivity into the Arduino when it runs autonomously. 
+This is one of two such modes, the other being interactively working with the cellular modem by means of a serial
+connection. This is built into the IDE and it is enabled next.
 
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_serial_monitor.png" alt="drawing" width="500"/>
