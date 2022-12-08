@@ -71,4 +71,12 @@ Upon connecting to the Arduino: Tools > Port to connect to the Arduino.
 The Example sketch to begin with is File > Examples > DFRobot_SIM7000 > DFRobotSIM7000ATTest.
 
 
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_serial_monitor.png" alt="drawing" width="500"/>
+
+
+The IDE has a 'circle and dots' icon at the upper right. Use this to open the Serial Monitor as a panel at the bottom
+of the IDE. Note it is part of a tabbed selector. Configure it to use **Both NL & CR** and **9600 baud**. The monitor
+can now be used to test **`AT`** cellular modem commands. 
+
+
 
