@@ -85,8 +85,37 @@ of the IDE. Note it is part of a tabbed selector. Configure it to use **Both NL 
 can now be used to test **`AT`** cellular modem commands interactively.
 
 
-## Interactive session IDE to cellular modem
+### From Configuration to Communication
+
+
+This section outlines the process of getting two-way communication running 
+programmatically between the Arduino and the cloud.
+
+
+#### Interactive session: IDE to cellular modem
 
 Use [this walk-through](https://github.com/robfatland/digitaltwin/blob/main/AT.md) 
 to test the cellular modem and become familiar with how the commands work.
 
+#### Programmatic use of the cellular modem
+
+
+#### Twilio
+
+
+##### SIM cards
+
+
+##### Paying for the service
+
+
+##### Configuring the service
+
+
+#### AWS
+
+
+#### Azure
+
+
+#### Google Cloud
