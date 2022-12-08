@@ -38,17 +38,20 @@ clouds in turn may provide some directive guidance back to **A**,
     - [Product link](https://wiki.dfrobot.com/SIM7000_Arduino_NB-IoT_LTE_GPRS_Expansion_Shield_SKU__DFR0505_DFR0572)
     - Use [LTE](https://en.wikipedia.org/wiki/LTE_(telecommunication)): A wireless broadband communication standard for mobile devices
         - Does not use GNSS (navigation system)
-- Modem control code and documentation
+- The cellular modem has a command vocabulary
+    - Each command is prefaced by uppercase **`AT`** which historically abbreviated "Attention!"
+    - These commands are sent to the SIM7000 shield
+        - During development: From the Arduino IDE; and from the Arduino sketch
+        - During operation: From the Arduino sketch
+- Modem command vocabulary documentation
     - Search **`sim7000 AT commands`** > [User Manual](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwiXu--4zOr7AhX-MDQIHbWzAmMQFnoECBAQAQ&url=https%3A%2F%2Fsimcom.ee%2Fdocuments%2FSIM7000x%2FSIM7000%2520Series_AT%2520Command%2520Manual_V1.04.pdf&usg=AOvVaw3YaMs0QRpt9-A082_i6Ky3)
-    - Search **`sim7000 tcpip`** > [Use case document]()
-
-    - See the function [modem_init()](https://github.com/naclomi/emojiomi/blob/main/device/firmware/main/main.ino)
-
-
-
-
+    - Search **`sim7000 tcpip`** > [Use case document](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwilrumR5ej7AhU8CjQIHUUCBC8QFnoECA4QAQ&url=https%3A%2F%2Fsimcom.ee%2Fdocuments%2FSIM7000x%2FSIM7000%2520Series_TCPIP_Application%2520Note_V1.01.pdf&usg=AOvVaw3bO5eF1vb4eJi7zgeLCqi8)
+        - Figure 2 reproduced below gives a sense of the cellular modem command vocabulary
+- Modem command code resource
+    - See the modem_init() function [here](https://github.com/naclomi/emojiomi/blob/main/device/firmware/main/main.ino)
+        - These commands can be entered manually via the IDE during development
 
 
-See Figure 2 at [this link](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwilrumR5ej7AhU8CjQIHUUCBC8QFnoECA4QAQ&url=https%3A%2F%2Fsimcom.ee%2Fdocuments%2FSIM7000x%2FSIM7000%2520Series_TCPIP_Application%2520Note_V1.01.pdf&usg=AOvVaw3bO5eF1vb4eJi7zgeLCqi8)
 
-Search SIM7000 Series_AT Command Manual
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/ATflow.png" alt="drawing" width="500"/>
+
