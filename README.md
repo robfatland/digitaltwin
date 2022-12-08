@@ -79,7 +79,8 @@ connection. This is built into the IDE and it is enabled next.
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_serial_monitor.png" alt="drawing" width="500"/>
 
 
-The IDE has a 'circle and dots' icon at the upper right. Use this to open the Serial Monitor as a panel at the bottom
+The IDE has a 'circle and dots' icon at the upper right. Use this 
+(or ctrl + shift + M) to open the Serial Monitor as a panel at the bottom
 of the IDE. Note it is part of a tabbed selector. Configure it to use **Both NL & CR** and **9600 baud**. The monitor
 can now be used to test **`AT`** cellular modem commands interactively.
 
