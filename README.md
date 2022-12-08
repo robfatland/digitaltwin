@@ -87,13 +87,6 @@ can now be used to test **`AT`** cellular modem commands interactively.
 
 ## Interactive session IDE to cellular modem
 
+Use [this walk-through](https://github.com/robfatland/digitaltwin/blob/main/AT.md) 
+to test the cellular modem and become familiar with how the commands work.
 
-```
-AT
-```
-should produce **`OK`**.
-
-```
-AT+CIPSTATUS
-```
-should produce **`OK   STATE: IP INITIAL`** and some time (a minute) later: **`+CPIN: READY    SMS Ready`**.
