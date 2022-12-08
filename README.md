@@ -84,4 +84,15 @@ of the IDE. Note it is part of a tabbed selector. Configure it to use **Both NL 
 can now be used to test **`AT`** cellular modem commands interactively.
 
 
+## Interactive session IDE to cellular modem
 
+
+```
+AT
+```
+should produce **`OK`**.
+
+```
+AT+CIPSTATUS
+```
+should produce **`OK   STATE: IP INITIAL    +CPIN: READY    SMS Ready`** 
