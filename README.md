@@ -1,7 +1,7 @@
 # digitaltwin
 
 
-<img src="https://github.com/robfatland/digitaltwin/blob/master/i/testbed.png" alt="drawing" width="500"/>
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/testbed.png" alt="drawing" width="500"/>
 
 
 The purpose of this repository is to provide a circa-2022 recipe for building a
