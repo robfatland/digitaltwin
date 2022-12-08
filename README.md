@@ -95,4 +95,4 @@ should produce **`OK`**.
 ```
 AT+CIPSTATUS
 ```
-should produce **`OK   STATE: IP INITIAL    +CPIN: READY    SMS Ready`** 
+should produce **`OK   STATE: IP INITIAL`** and some time (a minute) later: **`+CPIN: READY    SMS Ready`**.
