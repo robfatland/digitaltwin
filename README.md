@@ -63,3 +63,12 @@ Library installation: Need info.
 
 
 Upon connecting to the Arduino: Tools > Port to connect to the Arduino.
+
+
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_test_sketches.png" alt="drawing" width="500"/>
+
+
+The Example sketch to begin with is File > Examples > DFRobot_SIM7000 > DFRobotSIM7000ATTest.
+
+
+
