@@ -80,6 +80,24 @@ After physically connecting to the Arduino: Use the IDE Tools > Port menu to ena
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_example_sketches.png" alt="drawing" width="500"/>
 
 
+### ATTest sketch
+
+
+#### Motivation and Digression
+
+
+We want to issue commands to the cellular modem, eventually to include 'send this string to an endpoint
+on the internet'. To do this we talk to the Arduino via serial port; and the Arduino in turn passes the 
+message along to the cellular modem via a second serial port. The traffic goes both ways: The cellular
+modem replies with some message (2nd serial connection) which the Arduino sends back (first serial
+connection) to the Arduino IDE. This works great with one important exception: 0x1a is interpreted by
+the SIM7000 cellular modem as '<end of message>' but there is no way to send this (it is ctrl-z) 
+from the IDE to the Arduino. Eventually we will modify the `ATTest` sketch (which is doing this 
+simple message passing in its execution loop) to flag a different keyboard character that we *can*
+send, probably the backtick **`\``**, and convert that to 0xa1. Now with this in mind we proceed to
+loading up the ATTest sketch to facilitate some manual communication with the SIM7000.
+
+
 Open an example sketch: Use the IDE File > Examples > DFRobot_SIM7000 menu to select sketch **`DFRobotSIM7000ATTest`**.
 This sketch is the model for how to build cellular modem interactivity into the Arduino when it runs autonomously. 
 This is one of two such modes, the other being interactively working with the cellular modem by means of a serial
@@ -92,7 +110,9 @@ connection. This is built into the IDE and it is enabled next.
 The IDE has a 'circle and dots' icon at the upper right. Use this 
 (or ctrl + shift + M) to open the Serial Monitor as a panel at the bottom
 of the IDE. Note it is part of a tabbed selector. Configure it to use **Both NL & CR** and **9600 baud**. The monitor
-can now be used to test **`AT`** cellular modem commands interactively.
+can now be used to test **`AT`** cellular modem commands interactively. As noted above:
+We type in strings, hit return; the string goes to the Arduino and is passed along
+to the SIM7000; and vice versa we see the response message.
 
 
 ### From Configuration to Communication
