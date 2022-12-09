@@ -77,7 +77,7 @@ AT+CMNB=1
 AT+CNMP=38
 AT+CIPMUX=1
 
-// STATE: IP INITIAL
+// STATE: IP INITIAL (To see status: Issue AT+CIPSTATUS)
 
 AT+CGDCONT=1,"IP","super"
 AT+CSTT="super","",""
