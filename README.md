@@ -55,8 +55,18 @@ clouds in turn may provide some directive guidance back to **A**,
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/ATflow.png" alt="drawing" width="500"/>
 
+### Arduino Power
 
-Library installation: Use the IDE Tools > Manage Libraries... menu to start the Library Manager on the left side of the IDE.
+The Arduino board can operate on power delivered by a USB cable. However the DFRobot cellular modem
+can draw power in excess of what is available by this means. Therefore
+
+- Obtain a 'barrel plug' power supply to power up the Arduino + DFRobot SIM7000 shield
+- Attach a USB cable from the development computer to the Arduino
+
+
+### Library installation
+
+In the Arduino IDE: Use the IDE Tools > Manage Libraries... menu to start the Library Manager on the left side of the IDE.
 Enter **`DFRobot_SIM7000`** in the search bar and install this library as well as any dependencies per the prompt.
 
 
