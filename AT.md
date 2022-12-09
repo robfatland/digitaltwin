@@ -46,4 +46,24 @@ OK
 ```
 AT+CIPSTATUS
 ```
-should produce **`OK   STATE: IP INITIAL`** and some time (a minute) later: **`+CPIN: READY    SMS Ready`**.
+
+Immediate:
+
+```
+OK
+
+STATE: IP INITIAL
+```
+
+plus subsequently (a minute or less): 
+
+```
++CPIN: READY
+SMS Ready
+```
+
+
+### Step 3
+
+
+
