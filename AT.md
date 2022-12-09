@@ -99,7 +99,9 @@ AT+CIFSR
 // STATE: IP STATUS
 
 AT+CLPORT=0,"UDP",6969
-AT+CIPSTART=0,"UDP","" IP_GATEWAY "","6969"
+AT+CIPSTART=0,"UDP","100.64.0.1","6969"          // a lot to explain here
+                                                 // and to listen to the universe
+                                                 // use 0.0.0.0 instead of 100.
       
 // STATE: CONNECT OK
 
