@@ -11,9 +11,7 @@ This repository provides a circa-2022 recipe for a
 simple sensor with a cellular modem for two-way communication with the cloud.
 The documentation tries to follow two guidelines: Minimize content to
 just the 'must know' and place deeper information into collateral documents
-[like this one](https://github.com/robfatland/digitaltwin/tree/main/i)
-concerning some historical context.
-
+[like this one](https://github.com/robfatland/digitaltwin/tree/main/i).
 
 
 ## recipe: sensor - Arduino - cellular modem - cloud - twin
