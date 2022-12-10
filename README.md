@@ -32,32 +32,44 @@ to locations with
 
 
 
-The case study motivating this documentation supposes three 
+Suppose we embark on a 'digital twin'
+project that depends upon data from three 
 sensor systems **a**, **b** and **c** built on the Arduino
-stack. Each supports a CdS sensor. We configure them to report to
-the Amazon, Google and Microsoft Azure clouds respectively. 
-Each cloud will also send control guidance back to establish
-two-way communication.
+stack. We configure them to report sensor measurements to
+the Amazon Web Services (AWS), 
+Google Cloud Platform (GCP) and 
+Microsoft Azure clouds respectively. 
+Each cloud will send control guidance back 
+to the sensors to demonstrate two-way communication.
 
 
-Additional technology is required to complete
-this construction. First we need a cellular modem in the form
-of an Arduino shield (an add-on circuit board). This uses a 
-SIM card to connect to, authenticate, and send and receive data
-through the cellular network. While data transfer described
-here makes use of commercial assets (T-Mobile, Verizon etcetera), 
-there is no need to set up contracts with commercial cell phone 
-carriers. Instead we establish a low-cost contract with a
+Additional technology is required between the Arduino and
+the cloud to complete
+this construction. We use a cellular modem in the form
+of an Arduino shield (an add-on circuit board) to connect
+to the cellular network. Specifically this cellular modem 
+uses a  SIM card to connect to, authenticate, and send and receive data. 
+While our data transfer uses commercial assets owned
+by T-Mobile, Verizon etcetera, 
+we do not establish contracts with commercial cell phone 
+carriers. Instead we establish a contract with a
 third party company that provides programmable communication tools
-for sending and receiving data. This company (Twilio) establishes
-necessary permissions with the commercial cell phone carriers. 
-In effect it is acting as a middle man between us and the 
-commercial carriers; and it acts as a message broker between our 
-Arduino device and the public clouds; AWS, GCP and Azure.
+for sending and receiving data. This company (Twilio) in turn
+establishes necessary permissions with the commercial carriers. 
+In effect Twilio acts as both a middle man between us and the 
+commercial carriers, and as a message broker between our 
+Arduino device and the public cloud. 
 
 
-As noted the features of this approach are low cost, low maintenance
-and high reliability.
+Messages that arrive
+at the cloud from the Arduino are necessarily parsed by
+software we supply. This software is referred to 
+herein as *serverless* because it is run as a service
+with no underlying server visible to us, the project developers. 
+
+
+The features of the prototype system described here include
+low cost, low maintenance effort and high reliability.
 
 
 - A prototype system will cost less than $100 to assemble
@@ -65,14 +77,17 @@ and high reliability.
     - Cost includes cloud storage of sensor data
 - Cloud data storage is extremely stable and reliable
 - Data transfer is low maintenance
-    - Built on services rather than hardware
-        - No servers, no network cards etcetera to maintain
-- No dependency on WiFi
+    - It is built on *services* rather than owned hardware
+        - There are no servers, no network cards etcetera
+- There is no dependency on WiFi 
 - Maintenance effort centers on the Arduino-based sensor
-    - Stable power supply
-    - Some degree of ruggedization
-    - Project needs change
-        - Necessitates occasional reprogramming
+    - It requires a stable power supply
+    - Ruggedization is generally necessary
+    - Research projects evolve over time
+        - This may result in modifying the Arduino system
+            - Change the hardware configuration
+            - Re-program the Arduino
+            - Re-program the cloud-based serverless data parser
 - Data on the cloud can be made selectively accessible
     - ...to collaborators
     - ...to other approved third parties
@@ -80,11 +95,18 @@ and high reliability.
 
 #### Need a diagram here
 
+## Pivot to project description
+
+
+The remainder of this document provides a 'build recipe' in outline form
+with references to supporting detail documentation.
+
 
 ### Sources
 
 
-- The cellular modem used here is available from DFRobot for $30
+- An Arduino UNO R3 runs USD30 or about USD45 as a 'starter kit' with some useful peripheral hardware
+- The cellular modem used here is available from DFRobot for USD30
     - Product name: SIM7000 Arduino NB-IoT/LTE/GPRS expansion shield
     - [Product link](https://wiki.dfrobot.com/SIM7000_Arduino_NB-IoT_LTE_GPRS_Expansion_Shield_SKU__DFR0505_DFR0572)
     - Use [LTE](https://en.wikipedia.org/wiki/LTE_(telecommunication)): A wireless broadband communication standard for mobile devices
@@ -137,6 +159,9 @@ After physically connecting to the Arduino: Use the IDE Tools > Port menu to ena
 #### Motivation and Digression
 
 
+##### This should go into an ancillary
+
+
 We want to issue commands to the cellular modem, eventually to include 'send this string to an endpoint
 on the internet'. To do this we talk to the Arduino via serial port; and the Arduino in turn passes the 
 message along to the cellular modem via a second serial port. The traffic goes both ways: The cellular
@@ -174,6 +199,13 @@ programmatically between the Arduino and the cloud.
 
 
 #### Twilio
+    
+    
+##### This should go into an ancillary
+    
+    
+##### Expand on what is an NAP and etc: Better capture on second time around
+    
 
 - Set up an account at [twilio.com](https://twilio.com)
 - Purchase some SuperSIM cards; this example project uses three of them
@@ -196,7 +228,13 @@ programmatically between the Arduino and the cloud.
             
     
 
-#### Lambda on AWS
+#### Serverless on cloud
+
+##### Instructions for revising this section:
+    
+- Abstract-ize this to the punchline of a URL
+- Move AWS-specific details down lower
+- Outline the delta between research code and Naomi code
 
 
 Some example code for building the AWS component of the signal chain is
@@ -228,6 +266,9 @@ between your Arduino and the Twilio service.
 
 #### Test: Messaging from the twilio app to the Arduino
 
+    
+##### To ancillary
+    
 
 Go to [this link](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands#send-ip-commands-to-the-device).
 
@@ -239,7 +280,8 @@ IDE Serial Monitor.
 
 #### Programmatic use of the cellular modem
 
-
+##### Ancillary
+    
 Update the sketch to send a simple payload periodically to twilio.
 
 This should forward to the Lambda function.
@@ -253,9 +295,23 @@ This should appear in the Serial window.
 
 
 #### AWS
+    
+##### Ancillary
+    
+- Serverless on AWS is given the AWS-specific service name 'Lambda function'
+    - This can be executed many times at very little cost (pennies per thousands)
+    - There are 86400 seconds per day
+- The Lambda function on AWS depends on another service to trigger
+    - API Gateway
+    - Payload comes in by means of...
 
 
 #### Azure
 
+##### Ancillary
+    
 
 #### Google Cloud
+
+##### Ancillary
+    
