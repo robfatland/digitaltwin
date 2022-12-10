@@ -4,34 +4,86 @@
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/testbed.png" alt="drawing" width="500"/>
 
 
+***Arduino-based development testbed***
+
+
 This repository provides a circa-2022 recipe for a
 simple sensor with a cellular modem for two-way communication with the cloud.
-The idea is to minimize the need-to-know and place some additional
-context in lateral digressions like
-[this one](https://github.com/robfatland/digitaltwin/tree/main/i).
-
+The documentation tries to follow two guidelines: Minimize content to
+just the 'must know' and place deeper information into collateral documents
+[like this one](https://github.com/robfatland/digitaltwin/tree/main/i)
+concerning some historical context.
 
 
 
 ## recipe: sensor - Arduino - cellular modem - cloud - twin
 
 
-Let's suppose we have a light sensor attached to an Arduino analog port.
-(See testbed image above.)
-This port can be read to yield a value from 0 to 255 indicating how much
-light is hitting the sensor. The sampling frequency can be anywhere 
-up to say kilohertz. Let's further suppose there are
-actually three such units: **A**, **B** and **C** and that each has
-a laser diode mounted on a servo motor. The initial idea (for a
-marginally non-trivial system) is to set each device up to hit the
-light sensor of the next in a triangle; and to have them report to
-the Amazon, Google and Azure clouds their current status. The 
-clouds in turn may provide some directive guidance back to **A**, 
-**B** and **C**.
+Let's suppose we are interested in measuring ambient light levels at some
+location over time. A microcomputer such as an Arduino or a Raspberry Pi
+can digitize a voltage mediated by a cadmium sulfide
+[photoresistor](https://en.wikipedia.org/wiki/Photoresistor)
+for this purpose. The question is then how to recover
+these data. This **Cloud Solution** 
+repository describes a particular means that relies upon
+cell phone infrastructure. The resulting system is low cost 
+and low maintenance; but sensor deployment is constrained
+to locations that have
+[cell phone coverage](https://www.fcc.gov/BroadbandData/MobileMaps/mobile-map).
 
 
 
-### References
+The case study motivating this documentation supposes three 
+sensor systems **a**, **b** and **c** built on the Arduino
+stack. Each supports a CdS sensor. We configure them to report to
+the Amazon, Google and Microsoft Azure clouds respectively. 
+Each cloud will also send control guidance back to establish
+two-way communication.
+
+
+Additional technology is required to complete
+this construction. First we need a cellular modem in the form
+of an Arduino shield (an add-on circuit board). This uses a 
+SIM card to connect to, authenticate, and send and receive data
+through the cellular network. While data transfer described
+here makes use of commercial assets (T-Mobile, Verizon etcetera), 
+there is no need to set up contracts with commercial cell phone 
+carriers. Instead we establish a low-cost contract with a
+third party company that provides programmable communication tools
+for sending and receiving data. This company (Twilio) establishes
+necessary permissions with the commercial cell phone carriers. 
+In effect it is acting as a middle man between us and the 
+commercial carriers; and it acts as a message broker between our 
+Arduino device and the public clouds; AWS, GCP and Azure.
+
+
+As noted the features of this approach are low cost, low maintenance
+and high reliability.
+
+
+- A prototype system will cost less than $100 to assemble
+- This system costs less than $5 per month to operate
+    - Cost includes cloud storage of sensor data
+- Cloud data storage is extremely stable and reliable
+- Data transfer is low maintenance
+    - Built on services rather than hardware
+        - No servers, no network cards etcetera to maintain
+- No dependency on WiFi
+- Maintenance effort centers on the Arduino-based sensor
+    - Stable power supply
+    - Some degree of ruggedization
+    - Project needs change
+        - Necessitates occasional reprogramming
+- Data on the cloud can be made selectively accessible
+    - ...to collaborators
+    - ...to other approved third parties
+
+
+#### Need a diagram here
+
+
+### Sources
+
 
 - The cellular modem used here is available from DFRobot for $30
     - Product name: SIM7000 Arduino NB-IoT/LTE/GPRS expansion shield
