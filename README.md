@@ -122,24 +122,83 @@ This section outlines the process of getting two-way communication running
 programmatically between the Arduino and the cloud.
 
 
+#### Twilio
+
+- Set up an account at [twilio.com](https://twilio.com)
+- Purchase some SuperSIM cards; this example project uses three of them
+    - Printed on the card is a long identifier code
+        - Note the last 4 digits of the Super SIM code you are using
+- Configure Twilio to be ready to receive messages from the cellular modem
+    - This in turn permits us to register and receive a Twilio-internal ip address
+    - Log in to twilio.com > IoT > Super Sim > SIMS
+    - Use the digits noted above to identify and select your SIM card
+        - The resulting configuration wizard requires a defined Fleet
+            - Create a Fleet: It requires an NAP
+                - Create an NAP; use the 'instant global' option
+            - Use a dummy Lambda URL for your SIM (temporarily)
+            - Choose HTTP GET
+                - Later this might necessarily be HTTP POST
+        - Set the SIM status to **Ready**
+            - We use IP commands, not SMS
+            - Also need a note on the UDP protocol
+        - Return to the SIMS dashboard and confirm your SIM is ready to go
+            
+    
+
+#### Lambda on AWS
+
+
+Some example code for building the AWS component of the signal chain is
+[here](https://github.com/naclomi/emojiomi/blob/main/infra/api/device_message/lambda_function.py).
+Focus on the `data[]` structure: That will be the payload. 
+
+
+Use API Gateway to establish a URL for messages from Twilio. Twilio will be acting as 
+a relay agency, passing messages between the Arduino device and the Lambda function. 
+When we move on to using Azure and GCP we will need additional vocabulary for equivalent
+services.
+
+
+Upon completing the Lambda: Return to the Twilio entry for the SIM and change the
+connection URL to that of the Lambda API Gateway.
+
+
 #### Interactive session: IDE to cellular modem
+
 
 Use [this walk-through](https://github.com/robfatland/digitaltwin/blob/main/AT.md) 
 to test the cellular modem and become familiar with how the commands work.
 
+
+With the prior steps completed (Twilio is prepared to recognize your SIM):
+Run through the commands in Part 3 in sequence to establish the connection
+between your Arduino and the Twilio service. 
+
+
+#### Test: Messaging from the twilio app to the Arduino
+
+
+Go to [this link](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands#send-ip-commands-to-the-device).
+
+
+Note that this Get Started guide is broken into sections. Follow Section 3 to test 
+send an IP Command from a computer to the Super SIM. The text should show up in the 
+IDE Serial Monitor. 
+
+
 #### Programmatic use of the cellular modem
 
 
-#### Twilio
+Update the sketch to send a simple payload periodically to twilio.
 
+This should forward to the Lambda function.
 
-##### SIM cards
+Have Lambda send something back.
+
+This should appear in the Serial window.
 
 
 ##### Paying for the service
-
-
-##### Configuring the service
 
 
 #### AWS
