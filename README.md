@@ -24,9 +24,10 @@ can digitize a voltage mediated by a cadmium sulfide
 for this purpose. The question is then how to recover
 these data. This **Cloud Solution** 
 repository describes a particular means that relies upon
-cell phone infrastructure. The resulting system is low cost 
-and low maintenance; but sensor deployment is constrained
-to locations that have
+cell phone infrastructure. The resulting system is reliable,
+low cost to build and operate, and requires little maintenance. 
+Deployment is constrained
+to locations with
 [cell phone coverage](https://www.fcc.gov/BroadbandData/MobileMaps/mobile-map).
 
 
