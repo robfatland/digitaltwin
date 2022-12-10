@@ -9,9 +9,15 @@
 
 This repository provides a circa-2022 recipe for a
 simple sensor with a cellular modem for two-way communication with the cloud.
-The documentation tries to follow two guidelines: Minimize content to
-just the 'must know' and place deeper information into collateral documents
-[like this one](https://github.com/robfatland/digitaltwin/tree/main/i).
+It is motivated by the 'digital twin' concept and related technological antecedents
+such as the Internet of Things (IOT).
+
+
+The documentation tries to follow two guidelines
+
+- Minimize content to 'must know' 
+- Place deeper information into ancillary documents
+[such as this one](https://github.com/robfatland/digitaltwin/tree/main/background/README.md).
 
 
 ## recipe: sensor - Arduino - cellular modem - cloud - twin
@@ -29,6 +35,11 @@ low cost to build and operate, and requires little maintenance.
 Deployment is constrained
 to locations with
 [cell phone coverage](https://www.fcc.gov/BroadbandData/MobileMaps/mobile-map).
+Our anticipated data rate is low in comparison to that used
+in voice communication. As a result we use a cheaper mechanism
+that piggybacks on
+the cellular network infrastructure using a communication protocol called the 
+User Datagram Protocol ([UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol)).
 
 
 
@@ -36,11 +47,12 @@ Suppose we embark on a 'digital twin'
 project that depends upon data from three 
 sensor systems **a**, **b** and **c** built on the Arduino
 stack. We configure them to report sensor measurements to
-the Amazon Web Services (AWS), 
-Google Cloud Platform (GCP) and 
-Microsoft Azure clouds respectively. 
+the Amazon Web Services ('AWS'), 
+Google Cloud Platform ('GCP') and 
+Microsoft Azure ('Azure') clouds respectively. 
 Each cloud will send control guidance back 
 to the sensors to demonstrate two-way communication.
+
 
 
 Additional technology is required between the Arduino and
