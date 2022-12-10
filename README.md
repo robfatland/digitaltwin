@@ -7,7 +7,7 @@
 ***Arduino-based development testbed***
 
 
-This repository provides a circa-2022 recipe for a
+This repository provides a circa-2022 recipe for combining a
 simple sensor with a cellular modem for two-way communication with the cloud.
 It is motivated by the 'digital twin' concept and related technological antecedents
 such as the Internet of Things (IOT).
