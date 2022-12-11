@@ -46,8 +46,8 @@ User Datagram Protocol ([UDP](https://en.wikipedia.org/wiki/User_Datagram_Protoc
 
 
 Suppose we embark on a 'digital twin'
-project that depends upon data from three 
-sensor systems **a**, **b** and **c** built on the Arduino
+project that depends upon data from three autonomous 
+sensor assemblies **A**, **B** and **C** built on the Arduino
 stack. We configure them to report sensor measurements to
 the Amazon Web Services ('AWS'), 
 Google Cloud Platform ('GCP') and 
