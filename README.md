@@ -20,15 +20,17 @@ The documentation tries to follow two guidelines
 [such as this one](https://github.com/robfatland/digitaltwin/tree/main/background/README.md).
 
 
-## recipe: sensor - Arduino - cellular modem - cloud - twin
+## Recipe
+
+### Sensor - Arduino - cellular modem - broker - cloud - digital twin
 
 
-Let's suppose we are interested in measuring ambient light levels at some
+Suppose we are interested in measuring ambient light levels at some
 location over time. A microcomputer such as an Arduino or a Raspberry Pi
 can digitize a voltage mediated by a cadmium sulfide
 [photoresistor](https://en.wikipedia.org/wiki/Photoresistor)
 for this purpose. The question is then how to recover
-these data. This **Cloud Solution** 
+the observational data. This **Cloud Solution** 
 repository describes a particular means that relies upon
 cell phone infrastructure. The resulting system is reliable,
 low cost to build and operate, and requires little maintenance. 
