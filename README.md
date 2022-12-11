@@ -180,12 +180,14 @@ We want to issue commands to the cellular modem, eventually to include 'send thi
 on the internet'. To do this we talk to the Arduino via serial port; and the Arduino in turn passes the 
 message along to the cellular modem via a second serial port. The traffic goes both ways: The cellular
 modem replies with some message (2nd serial connection) which the Arduino sends back (first serial
-connection) to the Arduino IDE. This works great with one important exception: 0x1a is interpreted by
-the SIM7000 cellular modem as '<end of message>' but there is no way to send this (it is ctrl-z) 
-from the IDE to the Arduino. Eventually we will modify the `ATTest` sketch (which is doing this 
-simple message passing in its execution loop) to flag a different keyboard character that we *can*
-send, probably the backtick **`\``**, and convert that to 0xa1. Now with this in mind we proceed to
-loading up the ATTest sketch to facilitate some manual communication with the SIM7000.
+connection) to the Arduino IDE. This works great with one important exception: 0x1a is ctrl-z and is
+interpreted by the SIM7000 cellular modem as '\<end of message\>' but there is no way to send this 
+from the keyboard / IDE to the Arduino. Eventually we modify the `ATTest` sketch (which is doing this 
+simple message passing in its execution loop) to use a different keyboard character, 
+probably the backtick **`\``**, and pass this along as 0xa1. 
+
+
+With this in mind we load the ATTest sketch for manual communication with the SIM7000.
 
 
 Open an example sketch: Use the IDE File > Examples > DFRobot_SIM7000 menu to select sketch **`DFRobotSIM7000ATTest`**.
