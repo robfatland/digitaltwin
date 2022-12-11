@@ -1,7 +1,7 @@
 # digitaltwin
 
 
-<img src="https://github.com/robfatland/digitaltwin/blob/main/i/testbed.png" alt="drawing" width="500"/>
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/testbed.png" alt="drawing" width="400"/>
 
 
 ***Arduino-based development testbed***
@@ -107,7 +107,7 @@ low cost, low maintenance effort and high reliability.
     - ...to other approved third parties
 
 
-#### Need a diagram here
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/digitaltwin_signal_path.png" alt="drawing" width="500"/>
 
 ## Pivot to project description
 
@@ -140,7 +140,7 @@ with references to supporting detail documentation.
 
 
 
-<img src="https://github.com/robfatland/digitaltwin/blob/main/i/ATflow.png" alt="drawing" width="500"/>
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/ATflow.png" alt="drawing" width="400"/>
 
 ### Arduino Power
 
@@ -157,14 +157,14 @@ In the Arduino IDE: Use the IDE Tools > Manage Libraries... menu to start the Li
 Enter **`DFRobot_SIM7000`** in the search bar and install this library as well as any dependencies per the prompt.
 
 
-<img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_port_chooser.png" alt="drawing" width="500"/>
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_port_chooser.png" alt="drawing" width="400"/>
 
 
 Connect a laptop USB port to the Arduino USB port.
 After physically connecting to the Arduino: Use the IDE Tools > Port menu to enable the port connection to the Arduino.
 
 
-<img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_example_sketches.png" alt="drawing" width="500"/>
+<img src="https://github.com/robfatland/digitaltwin/blob/main/i/arduino_ide_example_sketches.png" alt="drawing" width="400"/>
 
 
 ### ATTest sketch
