@@ -169,6 +169,26 @@ After physically connecting to the Arduino: Use the IDE Tools > Port menu to ena
 
 ### ATTest sketch
 
+```
+ATE0
+AT+CMEE=2
+AT+CMNB=1
+AT+CNMP=38
+AT+CIPMUX=1
+AT+CGDCONT=1,"IP","super"
+AT+CSTT="super","",""
+AT+CEREG?
+AT+CIICR
+AT+CIFSR
+AT+CLPORT=0,"UDP",6969
+AT+CIPSTART=0,"UDP","100.64.0.1","6969"
+AT+CIPHEAD=1              // Identify data packets and their length
+```
+
+### Twilio diagnostic application
+
+Find it by searching on 'twilio cli'...
+
 
 #### Motivation and Digression
 
