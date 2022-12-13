@@ -180,14 +180,48 @@ AT+CSTT="super","",""
 AT+CEREG?
 AT+CIICR
 AT+CIFSR
-AT+CLPORT=0,"UDP",6969
-AT+CIPSTART=0,"UDP","100.64.0.1","6969"
-AT+CIPHEAD=1              // Identify data packets and their length
+AT+CLPORT=0,"UDP",6969                          // Connection 0: Returns an ip address: Must have; but not usable
+AT+CIPSTART=0,"UDP","100.64.0.1","6969"         // ip address is Twilio's gateway. Again connection 0
+AT+CIPHEAD=1                                    // Identify data packets and their length
+AT+CIPSEND=0,8                                  // message will be 8 bytes
+actually                                        // serial interface counts chars as bytes; will cut out after 8
+                                                // early terminate: Send a 0x1a ctrl-z character; but this is not
+                                                //   supported by the serial connection from the IDE to the Arduino
+                                                //   so this is where the sketch can be clever: Interpret a backtick
+                                                //   character as 'send ctrl-z (0x1a)' and this terminates the send.
 ```
 
-### Twilio diagnostic application
+### Twilio command line interface
 
-Find it by searching on 'twilio cli'...
+In the interest of small build steps, we now turn to using a command line interface 
+that runs on our Dev box.  This will send signals across the internet to Twilio 
+where they will be mapped to our Arduino device. With the Arduino in a connected
+state it will receive the message and echo the characters out to the serial 
+connection from the Arduino to the Arduino IDE (serial monitor). So when the 
+message appears in the serial monitor we have successfully sent data to our device.
+
+
+* Locate the SID and Token provided by Twilio when setting up the Twilio account
+* Locate the name of the Arduino device as it was registered at Twilio: I used **`a`**.
+* Find the Twilio install page by searching on 'twilio cli install'
+* For me on Windows: Install the Windows version
+* Start a Command Prompt
+* type **`twilio`**: Get a usage message
+* **`twilio login`**
+    * Paste in SID and token
+    * Give a shorthand identifier like **`kilroy`**
+    * Should not have to do this frequently
+* **`twilio profiles:use kilroy`**
+* **`twilio api:supersim:v1:ip-commands:create --sim a --payload "calculon says yes" --device-port 6969`**
+
+
+How to discover this command format? First, emphasis: We use **IP** commands for SuperSIM 
+UDP communication. The cheat sheet for twilio IP commands is found at
+[this URL](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands)
+Part 3 of this document has an example of sending an IP command to the device.
+
+
+> Actually it would be helpful to sort out *who* IP commands go to: Twilio or the Arduino or the shield.
 
 
 #### Motivation and Digression
