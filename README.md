@@ -191,11 +191,33 @@ actually                                        // serial interface counts chars
                                                 //   character as 'send ctrl-z (0x1a)' and this terminates the send.
 ```
 
+### Twilio monitor 
+
+First step in establishing the from/to communication: Arduino to twilio.
+
+* Log in to the twilio.com console
+* Select at upper left the **Monitor** tab
+* Expand **Logs**, select **Super SIM**
+* Main window select **IP Commands**
+* From the Arduino IDE: Use the Serial Monitor to send a string
+    * Example: Above we have **`AT+CIPSEND=0,8`** followed by **`actually`**
+* This string should show up in the message log
+    * Direction should be From SIM
+    * Payload something like Binary (base64 encoded) YWN0dWFsbHk=
+        * Can go to [this link](https://www.base64decode.org/): Decode, verify it matches
+    * Status is Received with a time stamp
+
+
+
 ### Twilio command line interface
 
-In the interest of small build steps, we now turn to using a command line interface 
-that runs on our Dev box.  This will send signals across the internet to Twilio 
-where they will be mapped to our Arduino device. With the Arduino in a connected
+
+Second step in establishing the from/to communication: twilio to Arduino.
+
+
+We now install and use a command line interface 
+that runs on our Dev box.  This will send signals through the internet to Twilio 
+where they in turn route the message to our Arduino device. With the Arduino in a connected
 state it will receive the message and echo the characters out to the serial 
 connection from the Arduino to the Arduino IDE (serial monitor). So when the 
 message appears in the serial monitor we have successfully sent data to our device.
@@ -221,7 +243,7 @@ UDP communication. The cheat sheet for twilio IP commands is found at
 Part 3 of this document has an example of sending an IP command to the device.
 
 
-> Actually it would be helpful to sort out *who* IP commands go to: Twilio or the Arduino or the shield.
+> It would be helpful to sort out *who* IP commands go to: Twilio or the Arduino or the shield.
 
 
 #### Motivation and Digression
