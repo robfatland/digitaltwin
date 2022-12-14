@@ -2,7 +2,24 @@
 
 What are the technical challenges involved in the 'recipe' given here? This outline may
 help evaluate what one is signing up to deal with. Notice that debugging tools 
-figure prominently; and in some cases solutions are mentioned.
+figure prominently; and in some cases solutions are mentioned. I present two versions 
+of this list: Abbreviated and 'in exhausting detail'
+
+### Abbreviated list of challenges
+
+
+* Building a prototype sensor device that can send and receive information
+* Setting up the chain of communication to the cloud
+* Setting up the cloud endpoint that connects to the prototype device
+* Writing data to an accessible storage location
+* Debugging each step of a gradualist approach to building this system
+
+
+The goal here is to connect to more than one cloud as an excercise in validating 
+equivalence. 
+
+
+### Exhaustive list of challenges
 
 
 * Obtaining appropriate leaf-node technology
@@ -44,7 +61,10 @@ figure prominently; and in some cases solutions are mentioned.
         * Azure TBD
     * Serverless functions need access to the Python twilio REST API library
         * AWS this means bundling a zip file
-* We have a large block of difficult-to-read text
-    * Could it be JSON? Good news: Search 'json beautify' which behaves just like a "English -> German" translate website
-    * Not JSON? Could it be yaml?? Good news: Search 'yaml beautify' which behaves likewise
+* Specific catch-points 
+    * We have a large block of difficult-to-read text
+        * Could it be JSON? Good news: Search 'json beautify' which behaves just like a "English -> German" translate website
+        * Not JSON? Could it be yaml?? Good news: Search 'yaml beautify' which behaves likewise
+    * We would like to terminate a message payload that is shorter than intended
+        * ctrl-z 0x1a can not be sent via the serial monitor to the Arduino
        
