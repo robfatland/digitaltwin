@@ -387,6 +387,26 @@ This should appear in the Serial window.
 
 
 #### AWS
+
+
+Fixing up the twilio.rest: Here is Naomi's text from 
+https://github.com/naclomi/emojiomi/blob/main/infra/Makefile
+
+```
+api: build/api/requirements.done
+	mkdir -p ./dist/api
+	cp ../assets/sd/dict.json ./api/common/
+	zip -FSj dist/api/set.zip ./api/set/* ./api/common/*
+	zip -FSj dist/api/device_message.zip api/device_message/* ./api/common/*
+	cd build/api && zip -FS -r ../../dist/api/env.zip ./python
+
+build/api/requirements.done: api/common/requirements.txt
+	rm -rf ./build/api/python
+	mkdir -p ./build/api/python
+	pip install --target ./build/api/python -r ./api/common/requirements.txt
+	touch ./build/api/requirements.done
+```
+
     
 ##### Ancillary
     
