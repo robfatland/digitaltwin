@@ -406,8 +406,17 @@ build/api/requirements.done: api/common/requirements.txt
 	pip install --target ./build/api/python -r ./api/common/requirements.txt
 	touch ./build/api/requirements.done
 ```
+File this away in the proper pls: 
 
+https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands
     
+    
+and this for the twilio CLI installation page (Windows particularly)
+
+
+https://www.twilio.com/docs/twilio-cli/getting-started/install#windows
+
+
 ##### Ancillary
     
 - Serverless on AWS is given the AWS-specific service name 'Lambda function'
