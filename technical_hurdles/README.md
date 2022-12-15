@@ -1,9 +1,18 @@
-# Hurdles
+# Hurdles and Opportunities
 
-What are the technical challenges involved in the 'recipe' given here? This outline may
-help evaluate what one is signing up to deal with. Notice that debugging tools 
-figure prominently; and in some cases solutions are mentioned. I present two versions 
-of this list: Abbreviated and 'in exhausting detail'
+What are the technical challenges involved in the 'recipe' given here? 
+What are the non-recipe challenges -- let's call them opportunities -- to
+take other pathways to digital twin success?
+
+
+This outline may is intended to help evaluate what one is signing up to deal with.
+The development process is intended to be gradual: One stage at a time, and test
+each incremental step as you go. Debugging tools and methods figure prominently; 
+and for some obstacles our solutions are indicated. 
+
+The first version of the challenge list is an executive summary. Following this
+is a longer version, 'exhausting detail'. Finally: Opportunities.
+
 
 ### Abbreviated list of challenges
 
@@ -67,4 +76,13 @@ equivalence.
         * Not JSON? Could it be yaml?? Good news: Search 'yaml beautify' which behaves likewise
     * We would like to terminate a message payload that is shorter than intended
         * ctrl-z 0x1a can not be sent via the serial monitor to the Arduino
-       
+ 
+ 
+ ### Opportunities
+ 
+ * Place sensors outside of cellular network coverage
+     * Iridium satellite modem runs $250 to $500
+         * [Example product](https://www.adafruit.com/product/4521?gclid=CjwKCAiAheacBhB8EiwAItVO21Se42TcwPgNURyrT8hS_k84LQ4AArFIll1n0TPMxP1NxonIR_NJnBoCpYwQAvD_BwE)
+     * Subscription rate $15/month
+     * Arduino possible (postings online circa 2019) but a raspberry pi might be a stronger option
+     * Example project: Look up microSWIFT in relation to SWIFT (UW APL)
