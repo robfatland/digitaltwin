@@ -356,6 +356,13 @@ Run through the commands in Part 3 in sequence to establish the connection
 between your Arduino and the Twilio service. 
 
 
+Expand on the idea that the inbound-to-Twilio should be diagnose-able. 
+It is: Find the Monitor / IP commands for SuperSIM using the console and
+the messages should appear there; going in both directions (twilio cli to 
+Arduino, vice versa). The Arduino message will be base64 encoded so 
+use the translator.
+
+
 #### Test: Messaging from the twilio app to the Arduino
 
     
@@ -381,6 +388,110 @@ This should forward to the Lambda function.
 Have Lambda send something back.
 
 This should appear in the Serial window.
+
+
+##### Making a Lamda layer
+
+
+Make a development folder in the Linux environment.
+
+```
+mkdir dtwin; cd dtwin
+```
+
+Here: Edit `requirements.txt` to look like this: 
+
+```
+twilio
+pyjwt
+jinja2
+bcrypt
+```
+
+This is perhaps more than is needed. twilio is the main point. 
+
+Create a sub-folder called Python
+
+```
+mkdir python
+```
+
+Build the requirements into this folder:
+
+Zip the results
+
+```
+zip -FS -r ./python.zip ./python
+```
+
+Move this into a Windows folder where it can be accessed by an Upload wizard.
+
+```
+mv python.zip /mnt/c/Users/kilroy/Downloads
+```
+
+- Log in to the AWS console > Set your region > Lambda > Layers > Create Layer
+- Configure this wizard
+    - Name: `digitaltwin_requirements`
+    - Description: List the requirements.txt libraries `twilio` etcetera
+    - Runtimes: Select ***ALL*** Python runtimes, not just one
+    - Create
+- Lambda > choose Lambda > put this code in the code window
+
+
+```
+import base64
+import json
+import time
+
+import boto3
+import botocore.exceptions
+from decimal import Decimal
+
+import os
+
+import twilio.rest
+
+acct_id_env = os.environ['acct_id_env']
+acct_token_env = os.environ['acct_token_env']
+
+def lambda_handler(event, context):
+    print(str(event))
+    print(base64.b64decode(event["queryStringParameters"]["Payload"]).decode())
+    
+    # print(str(event["queryStringParameters"]))
+    el_sim = event["queryStringParameters"]["SimUniqueName"]
+    # data = base64.b64decode(event["queryStringParameters"]["Payload"]).decode()
+    # print(data)
+
+
+    client = twilio.rest.Client(acct_id_env, acct_token_env)
+    result = client.supersim.v1.ip_commands.create(
+        sim=el_sim,
+        device_port=6969,
+        payload="cloud says what"
+    )
+
+    return {
+        'statusCode': 200,
+        'payload': str(event)
+    }
+```
+
+- Set up an API Gateway, link to this Lambda function
+- Lambda function > Scroll to bottom of Code > Layers > Add Layer > Custom layers > Choose the layer added above
+- Lambda function > Configuration > Environment variables > Edit > Add two variables from the twilio account
+
+These are the User SID and the access token
+
+```
+acct_id_env          123456789012345678901234567890123456789012345678901234567890
+acct_token_env       ABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQR
+```
+
+
+Notice these are picked up in the Lambda code using `acct_id_env = os.environment['acct_id_env']`.
+
 
 
 ##### Paying for the service
