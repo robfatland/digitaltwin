@@ -2,6 +2,9 @@
 
 
 Here we describe the building blocks that go into this digital twin demonstration project.
+The process is broken into two phases: First putting the pieces in place to support two-way 
+communication between a sensor system and the cloud; and second refining the programs to 
+support a demonstration scenario.
 
 
 > Note: This project is not affiliated with or sponsored by [twilio](https://twilio.com).
