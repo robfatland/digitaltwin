@@ -1,23 +1,27 @@
 # digitaltwin
 
 
+* [Project background](https://github.com/robfatland/digitaltwin/tree/main/background)
+* [Development narrative](https://github.com/robfatland/digitaltwin/tree/main/narrative)
+
+
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/testbed.png" alt="drawing" width="400"/>
 
 
 ***Arduino-based development testbed***
 
 
-This repository provides a circa-2022 recipe for combining a
+This repository is a circa-2022 recipe for combining a
 simple sensor with a cellular modem for two-way communication with the cloud.
-It is motivated by the 'digital twin' concept and related technological antecedents
-such as the Internet of Things (IOT).
+It is motivated by the 'digital twin' concept and its technological antecedent
+'Internet of Things' (IOT).
 
 
 The documentation tries to follow two guidelines
 
+
 - Minimize content to 'must know' 
 - Place deeper information into ancillary documents
-[such as this one](https://github.com/robfatland/digitaltwin/tree/main/background/README.md).
 
 
 ## Recipe
@@ -120,7 +124,7 @@ with references to supporting detail documentation.
 
 
 - An Arduino UNO R3 runs USD30 or about USD45 as a 'starter kit' with some useful peripheral hardware
-- The cellular modem used here is available from DFRobot for USD30
+- The cellular modem used here is available from DFRobot for USD40
     - Product name: SIM7000 Arduino NB-IoT/LTE/GPRS expansion shield
     - [Product link](https://wiki.dfrobot.com/SIM7000_Arduino_NB-IoT_LTE_GPRS_Expansion_Shield_SKU__DFR0505_DFR0572)
     - Use [LTE](https://en.wikipedia.org/wiki/LTE_(telecommunication)): A wireless broadband communication standard for mobile devices
@@ -493,60 +497,31 @@ acct_token_env       ABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDE
 Notice these are picked up in the Lambda code using `acct_id_env = os.environment['acct_id_env']`.
 
 
-
-##### Paying for the service
-
-
-#### AWS
+# Unsorted content
 
 
-Fixing up the twilio.rest: Here is Naomi's text from 
-https://github.com/naclomi/emojiomi/blob/main/infra/Makefile
-
-```
-api: build/api/requirements.done
-	mkdir -p ./dist/api
-	cp ../assets/sd/dict.json ./api/common/
-	zip -FSj dist/api/set.zip ./api/set/* ./api/common/*
-	zip -FSj dist/api/device_message.zip api/device_message/* ./api/common/*
-	cd build/api && zip -FS -r ../../dist/api/env.zip ./python
-
-build/api/requirements.done: api/common/requirements.txt
-	rm -rf ./build/api/python
-	mkdir -p ./build/api/python
-	pip install --target ./build/api/python -r ./api/common/requirements.txt
-	touch ./build/api/requirements.done
-```
-File this away in the proper pls: 
-
-https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands
-    
-    
-and this for the twilio CLI installation page (Windows particularly)
+* [Super SIM IP command reference](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands]
+* [Twilio CLI installation](https://www.twilio.com/docs/twilio-cli/getting-started/install#windows)
+* **`sudo apt install tree`** installs a useful tree-view version of recursive `ls` called, of course, `tree`
 
 
-https://www.twilio.com/docs/twilio-cli/getting-started/install#windows
+##### AWS Serverless Functions
 
 
-##### Ancillary
-    
-- Serverless on AWS is given the AWS-specific service name 'Lambda function'
-    - This can be executed many times at very little cost (pennies per thousands)
-    - There are 86400 seconds per day
-- The Lambda function on AWS depends on another service to trigger
-    - API Gateway
-    - Payload comes in by means of...
+- Serverless functions on AWS are called *Lambda functions*
+    - Very low cost per thousands of executions (compare 86400 seconds per day)
+- An AWS Lambda function executes in response to a *trigger*
+    - We use a separate service as a trigger, called an API Gateway
+        - The API Gateway provides an internet-accessible URL
+	- This URL will be registered with Twilio for routing sensor-originating messages
+	- This URL will also be used by a Python program running on the development system
 
 
-Note: `sudo apt install tree` gives a nice variant of `ls`.
 
 
-#### Azure
+#### Azure Serverless Functions
 
-##### Ancillary
-    
 
-#### Google Cloud
 
-##### Ancillary
+#### Google Cloud Serverless Functions
     
