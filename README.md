@@ -3,6 +3,7 @@
 
 * [Project background](https://github.com/robfatland/digitaltwin/tree/main/background)
 * [Development narrative](https://github.com/robfatland/digitaltwin/tree/main/narrative)
+* [temp: graphics development](https://docs.google.com/presentation/d/1bdB73Bvjc2u0iwq2IxrxCuNwtDI0Kh2ppTXeTmgdbrI/edit#slide=id.g1b4fc1ac9c2_0_0)
 
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/testbed.png" alt="drawing" width="400"/>
