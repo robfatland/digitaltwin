@@ -1,3 +1,13 @@
+### To Do
+
+
+- Expand Lambda a bit to provide a testable return directive
+- Create another Lambda that initiates contact to the Arduino (e.g. set servo angle)
+- Build an S3 with a CSV file that can be appended by yet a third Lambda
+- Out of curiosity what do the various libraries 'not in use' do? (Decimal etcetera)
+- Reorganize material to an AWS sub-folder here
+
+
 # digitaltwin
 
 
@@ -445,49 +455,47 @@ mv python.zip /mnt/c/Users/kilroy/Downloads
 
 
 ```
-import base64
-import json
-import time
+import base64                   # translate UDP message from the Arduino
+import json                     # not used yet...
+import time                     # not used yet...
+import boto3                    # not used yet...
+import botocore.exceptions      # not used yet...
+from   decimal import Decimal   # not used yet...
+import os                       # access environment variable dictionary
+import twilio.rest              # interact with the twilio service
 
-import boto3
-import botocore.exceptions
-from decimal import Decimal
-
-import os
-
-import twilio.rest
-
+# two authentication credentials for the twilio service
 acct_id_env = os.environ['acct_id_env']
 acct_token_env = os.environ['acct_token_env']
 
 def lambda_handler(event, context):
-    print(str(event))
+    
+    print(str(event))          # gives yaml output (will need to clean it up for further use)
     print(base64.b64decode(event["queryStringParameters"]["Payload"]).decode())
     
-    # print(str(event["queryStringParameters"]))
     el_sim = event["queryStringParameters"]["SimUniqueName"]
-    # data = base64.b64decode(event["queryStringParameters"]["Payload"]).decode()
-    # print(data)
+    # temporary note: Diagnostic ideas: print(str(event["qSPs"])) and print(data)
 
-
+    # create a client and have it send a reply
     client = twilio.rest.Client(acct_id_env, acct_token_env)
-    result = client.supersim.v1.ip_commands.create(
-        sim=el_sim,
-        device_port=6969,
-        payload="cloud says what"
-    )
-
+    result = client.supersim.v1.ip_commands.create( sim=el_sim,
+                                                    device_port=6969,
+                                                    payload="tx 4 the update")
+    
+    # return a dictionary
     return {
         'statusCode': 200,
         'payload': str(event)
     }
 ```
 
+
 - Set up an API Gateway, link to this Lambda function
 - Lambda function > Scroll to bottom of Code > Layers > Add Layer > Custom layers > Choose the layer added above
-- Lambda function > Configuration > Environment variables > Edit > Add two variables from the twilio account
+- Lambda function > Configuration > Environment variables > Edit > Add two variables from the twilio account.
+These are the User SID and the access token. They are loaded into program memory at the top of the Lambda 
+execution.
 
-These are the User SID and the access token
 
 ```
 acct_id_env          123456789012345678901234567890123456789012345678901234567890
@@ -495,7 +503,7 @@ acct_token_env       ABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDE
 ```
 
 
-Notice these are picked up in the Lambda code using `acct_id_env = os.environment['acct_id_env']`.
+In the Lambda code: `acct_id_env = os.environment['acct_id_env']`.
 
 
 # Unsorted content
