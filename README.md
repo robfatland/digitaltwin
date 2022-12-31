@@ -395,12 +395,16 @@ IDE Serial Monitor.
 #### Programmatic use of the cellular modem
 
 ##### Ancillary
-    
+
+
 Update the sketch to send a simple payload periodically to twilio.
+
 
 This should forward to the Lambda function.
 
+
 Have Lambda send something back.
+
 
 This should appear in the Serial window.
 
@@ -416,23 +420,24 @@ This should appear in the Serial window.
 * **`sudo apt install tree`** installs a useful tree-view version of recursive `ls` called, of course, `tree`
 
 
-##### AWS Serverless Functions
+##### [AWS](https://github.com/robfatland/digitaltwin/blob/main/aws/README.md)
 
 
 - Serverless functions on AWS are called *Lambda functions*
     - Very low cost per thousands of executions (compare 86400 seconds per day)
 - An AWS Lambda function executes in response to a *trigger*
-    - We use a separate service as a trigger, called an API Gateway
-        - The API Gateway provides an internet-accessible URL
-	- This URL will be registered with Twilio for routing sensor-originating messages
-	- This URL will also be used by a Python program running on the development system
+    - We work with two triggers: A Test trigger and an API Gateway trigger
+        - Test triggers are configured and run from the Lambda designer pages of the AWS console
+        - API Gateway triggers originate from a separate AWS service, the **`API Gateway`**
+	    - The API Gateway provides an internet-accessible URL
+	    - This URL is registered with Twilio for routing IOT sensor-originating messages
+	    - This URL is also used by a Python program running on a development system
+- The [AWS-specific cloud configuration notes are here.](https://github.com/robfatland/digitaltwin/blob/main/aws/README.md)
+
+
+#### Azure
 
 
 
-
-#### Azure Serverless Functions
-
-
-
-#### Google Cloud Serverless Functions
+#### Google Cloud
     
