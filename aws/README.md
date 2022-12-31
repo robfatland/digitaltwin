@@ -237,7 +237,8 @@ The key **`isIOT`** in the test JSON differentiates a test run from an IOT devic
 [example](https://www.youtube.com/watch?v=Al1xwYhQ-BM)
     * AWS Console > DynamoDB
         * Table name 'digitaltwin'
-        * Partition key ('message'), sort key ('timestamp')
+        * Partition key ('message')
+        * Sort key ('timestamp')
         * Table settings > Customize Settings
             * Read / Write capacity settings > On-demand
     - Create table
@@ -246,6 +247,18 @@ The key **`isIOT`** in the test JSON differentiates a test run from an IOT devic
 * Create / modify the **`digitaltwin`** Role used by the Lambda function: Add a DynamoDB policy
     * Console > IAM > Role > digitaltwin > Attach policies
     * Create a DynamoDB filter; find AmazonDynamoDBFullAccess Policy and attach this to the digitaltwin Role
+
+
+#### Aside: AWS CLI
+
+
+Can interact with DynamoDB using the CLI. Example (after config): 
+
+```
+aws sts get-caller-identity
+```
+
+to verify we are who we think we are.
 
 
 
