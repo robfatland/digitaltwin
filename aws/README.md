@@ -36,6 +36,10 @@ Detailed instructions and notes follow in subsequent sections.
 
 ## Build a Python environment zip file
 
+
+[Top](#aws)
+
+
 This assumes you are working in a Linux environment. If you are working on a PC (Windows machine) 
 this may involve a detour to install the most recent version of WSL or Anaconda; beyond the scope
 of this document. 
@@ -118,7 +122,17 @@ as we build *that*.
 ## Create a Role
 
 
+[Top](#aws)
+
+
+
+
 ## Create a Lambda function
+
+
+[Top](#aws)
+
+
 
 
 ### Add Layer
@@ -133,7 +147,17 @@ as we build *that*.
 ## Create an API Gateway trigger
 
 
+[Top](#aws)
+
+
+
+
 ## Configure credentials and code
+
+
+[Top](#aws)
+
+
 
 
 ### Environment variables
@@ -186,7 +210,15 @@ regard to parsing inbound content from an IOT device.
 ## Test communication in both directions
 
 
+[Top](#aws)
+
+
+
 ## Add a DynamoDB table
+
+
+[Top](#aws)
+
 
 * Create a DynamoDB table (See YouTube for walkthroughs; 
 [example](https://www.youtube.com/watch?v=9eHh946qTIk), [example](https://www.youtube.com/watch?v=2k2GINpO308)),
@@ -198,4 +230,12 @@ regard to parsing inbound content from an IOT device.
     * Console > IAM > Role > digitaltwin > Attach policies
     * Create a DynamoDB filter
 
+
+
 ## Add an API call
+
+
+[Top](#aws)
+
+
+
