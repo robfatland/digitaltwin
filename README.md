@@ -415,7 +415,7 @@ This should appear in the Serial window.
 # Unsorted content
 
 
-* [Super SIM IP command reference](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands]
+* [Super SIM IP command reference](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands)
 * [Twilio CLI installation](https://www.twilio.com/docs/twilio-cli/getting-started/install#windows)
 * **`sudo apt install tree`** installs a useful tree-view version of recursive `ls` called, of course, `tree`
 
