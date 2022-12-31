@@ -235,12 +235,17 @@ The key **`isIOT`** in the test JSON differentiates a test run from an IOT devic
 * Create a DynamoDB table (See YouTube for walkthroughs; 
 [example](https://www.youtube.com/watch?v=9eHh946qTIk), [example](https://www.youtube.com/watch?v=2k2GINpO308),
 [example](https://www.youtube.com/watch?v=Al1xwYhQ-BM)
-    * Defaults except table name (digitaltwin) and partition key (messageid) > Create table
-    * Note we have a resulting Amazon Resource Name (ARN: An unambiguous resource identifier)
-        * This looks like **`arn:aws:dynamodb:us-west-2:123412341234:table/digitaltwin`**
-* Create / modify the **`digitaltwin`** Role to include a DynamoDB policy
+    * AWS Console > DynamoDB
+        * Table name 'digitaltwin'
+        * Partition key ('message'), sort key ('timestamp')
+        * Table settings > Customize Settings
+            * Read / Write capacity settings > On-demand
+    - Create table
+        * Note we have a resulting Amazon Resource Name (ARN: An unambiguous resource identifier)
+            * This looks like **`arn:aws:dynamodb:us-west-2:123412341234:table/digitaltwin`**
+* Create / modify the **`digitaltwin`** Role used by the Lambda function: Add a DynamoDB policy
     * Console > IAM > Role > digitaltwin > Attach policies
-    * Create a DynamoDB filter
+    * Create a DynamoDB filter; find AmazonDynamoDBFullAccess Policy and attach this to the digitaltwin Role
 
 
 
