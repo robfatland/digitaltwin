@@ -158,6 +158,12 @@ as we build *that*.
 [Top](#aws)
 
 
+This step emplaces Python code in the Event Handler code box. This code references Twilio credentials
+by means of environment variables. While we are setting these up we also configure the Test utility 
+in order to test the Lambda function without necessarily having to run the IOT device. 
+
+
+### Code
 
 
 ### Environment variables
@@ -185,14 +191,19 @@ These are loaded in code for example with: `acct_id_env = os.environment['acct_i
 ### Test function
 
 
-A Lambda function comes with a built-in test mechanism (see function tabs in the Lambda console). 
-This makes use of a JSON specification of some key-value pairs so here we configure this to do
-something of use in our overall process, specifically try and send a message to an IOT device.
-The third parameter **`isIOT`** will be used to cause the Lambda to initiate a message without
-regard to parsing inbound content from an IOT device. 
+Under normal operation an IOT device sends a message to the Twilio service which in turn 
+forwards it to the AWS API Gateway which in turn forwards it to this Lambda function.
+This is one way to test the Lambda function; but a much simpler test mechanism is built 
+into AWS Lambda functions, per the **`Test`** button. The Test tab in the Lambda design
+console allows us to configure the **`event`** that is passed to the Lambda event handler. 
 
 
-- Edit the test Event JSON read as follows:
+The Test event is configured using the JSON key-value table on the Test tab. Eventually
+we will use this Lambda trigger path to send a message to an IOT device.
+The key **`isIOT`** in the test JSON differentiates a test run from an IOT device run.
+
+
+- Edit the test Event JSON table to read as follows:
 
 
 ```
@@ -204,7 +215,8 @@ regard to parsing inbound content from an IOT device.
 ```
 
 
-- Save, Test
+- Save this and run the Test from the Code tab.
+- If the Lambda code is modified, be sure to click **`Deploy`** before re-running **`Test`**.
 
 
 ## Test communication in both directions
