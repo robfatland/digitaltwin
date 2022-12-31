@@ -21,6 +21,9 @@ Detailed instructions and notes follow in subsequent sections.
 
 ## AWS Account
 
+[Top](#aws)
+
+
 - Test accounts are available with some pre-established credit limit (say $100 or so)
     - These can be used to become familiar with elements of AWS
 - Paid accounts are billed monthly based on the resources we use
