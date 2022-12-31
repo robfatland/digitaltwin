@@ -33,6 +33,11 @@ Detailed instructions and notes follow in subsequent sections.
 ## Add a DynamoDB table
 
 * Create a DynamoDB table (See YouTube for walkthroughs)
-* and so on
+    * Defaults except table name (digitaltwin) and partition key (messageid) > Create table
+    * Note we have a resulting Amazon Resource Name (ARN: An unambiguous resource identifier)
+        * This looks like **`arn:aws:dynamodb:us-west-2:123412341234:table/digitaltwin`**
+* Create / modify the **`digitaltwin`** Role to include a DynamoDB policy
+    * Console > IAM > Role > digitaltwin > Attach policies
+    * Create a DynamoDB filter
 
 ## Add an API call
