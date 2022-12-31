@@ -18,11 +18,119 @@ Detailed instructions and notes follow in subsequent sections.
 
 ## AWS Account
 
+- Test accounts are available with some pre-established credit limit (say $100 or so)
+    - These can be used to become familiar with elements of AWS
+- Paid accounts are billed monthly based on the resources we use
+    - In academia we (UW) advocate for waiving indirect costs for cloud use
+- The account root owner should be used to create an IAM User as an administrator (admin Policy)
+    - The root account is not used for actual building / working on AWS
+- Enable two-factor authentication and spend some time learning about secure operation on AWS
+- Use great care to not place account information on GitHub, particularly not Access Keys
+
+
 ## Build a Python environment zip file
+
+This assumes you are working in a Linux environment. If you are working on a PC (Windows machine) 
+this may involve a detour to install the most recent version of WSL or Anaconda; beyond the scope
+of this document. 
+
+
+The key idea here is to build a Lambda **layer** that will supplement the Lambda code and environment 
+variables as described below.  A Lambda layer is a . zip file archive that can contain additional 
+code or other content. A layer can contain libraries, a custom runtime, data, or configuration files.
+In our case we are particularly interested in the *library* supporting access to the Twilio 
+messaging service.
+
+### Make the Lambda layer
+
+
+Make a development folder in the Linux environment.
+
+
+```
+mkdir dtwin; cd dtwin
+```
+
+
+Here: Edit `requirements.txt`: 
+
+```
+twilio
+pyjwt
+jinja2
+bcrypt
+```
+
+Create a sub-folder **`python`**:
+
+
+```
+mkdir python
+```
+
+Build the requirements into this folder:
+
+```
+command missing
+```
+
+
+Zip the results
+
+
+```
+zip -FS -r ./python.zip ./python
+```
+
+
+Move this to a location accessible to an Upload wizard. In the case of working from a 
+Linux environment on a Windows machine this requires crossing over to the Windows
+filesystem, as in:
+
+
+```
+mv python.zip /mnt/c/Users/someusername/Downloads
+```
+
+
+We are now prepared to create an AWS Lambda Layer which exists independent of a
+particular AWS Lambda function. It is subsequently added *to* the Lambda function
+as we build *that*. 
+
+
+- Log in to the AWS console > Set your region > Lambda > Layers > Create Layer
+- Configure this wizard
+    - Name: `digitaltwin_requirements`
+    - Description: List the requirements.txt libraries `twilio` etcetera
+    - Runtimes: Select ***ALL*** Python runtimes, not just one
+    - Create
+
+
 
 ## Create a Role
 
 ## Create a Lambda function
+
+
+### Test function
+
+A Lambda function comes with a built-in test mechanism (see function tabs in the Lambda console). 
+This makes use of a JSON specification of some key-value pairs so here we configure this to do
+something of use in our overall process, specifically try and send a message to an IOT device.
+The third parameter **`isIOT`** will be used to cause the Lambda to initiate a message without
+regard to parsing inbound content from an IOT device. 
+
+- Edit the test Event JSON read as follows:
+
+```
+{
+  "testuser": "kilroy",
+  "testdata": "3.14",
+  "isIOT": "False"
+}
+```
+
+- Save, Test
 
 ## Create an API Gateway trigger
 
