@@ -32,7 +32,9 @@ Detailed instructions and notes follow in subsequent sections.
 
 ## Add a DynamoDB table
 
-* Create a DynamoDB table (See YouTube for walkthroughs)
+* Create a DynamoDB table (See YouTube for walkthroughs; 
+[example](https://www.youtube.com/watch?v=9eHh946qTIk), [example](https://www.youtube.com/watch?v=2k2GINpO308)),
+[example](https://www.youtube.com/watch?v=Al1xwYhQ-BM)
     * Defaults except table name (digitaltwin) and partition key (messageid) > Create table
     * Note we have a resulting Amazon Resource Name (ARN: An unambiguous resource identifier)
         * This looks like **`arn:aws:dynamodb:us-west-2:123412341234:table/digitaltwin`**
