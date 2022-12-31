@@ -12,7 +12,7 @@ Detailed instructions and notes follow in subsequent sections.
 5. Create an API Gateway trigger for the Lambda
 6. Configure Twilio credentials and code for the Lambda to use when it runs
 7. Test communication in both directions 'cloud <--> IOT device' (Arduino in this case)
-8. Add a [DynamoDB table](#add_a_dynamodb_table) to store data from the IOT device(s)
+8. Add a [DynamoDB table](#add-a-dynamodb-table) to store data from the IOT device(s)
 9. Add a non-IOT API call to the cloud environment
 
 
