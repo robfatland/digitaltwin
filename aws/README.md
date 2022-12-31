@@ -221,7 +221,7 @@ regard to parsing inbound content from an IOT device.
 
 
 * Create a DynamoDB table (See YouTube for walkthroughs; 
-[example](https://www.youtube.com/watch?v=9eHh946qTIk), [example](https://www.youtube.com/watch?v=2k2GINpO308)),
+[example](https://www.youtube.com/watch?v=9eHh946qTIk), [example](https://www.youtube.com/watch?v=2k2GINpO308),
 [example](https://www.youtube.com/watch?v=Al1xwYhQ-BM)
     * Defaults except table name (digitaltwin) and partition key (messageid) > Create table
     * Note we have a resulting Amazon Resource Name (ARN: An unambiguous resource identifier)
