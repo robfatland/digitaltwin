@@ -1,9 +1,12 @@
 # AWS
 
+
 ## Introduction
+
 
 These notes are specific to composing the cloud element for a digital twin project on Amazon Web Services (AWS). 
 Detailed instructions and notes follow in subsequent sections.
+
 
 1. Establish an [AWS account](#aws_account) and sign in as an IAM User (not root)
 2. On your development computer: [Build a Python environment zip file](#build-a-python-environment-zip-file)
@@ -68,10 +71,12 @@ Create a sub-folder **`python`**:
 mkdir python
 ```
 
+
 Build the requirements into this folder:
 
+
 ```
-command missing
+pip install --target ./python -r ./requirements.txt
 ```
 
 
@@ -109,10 +114,49 @@ as we build *that*.
 
 ## Create a Role
 
+
 ## Create a Lambda function
 
 
+### Add Layer
+
+
+- Lambda function > Scroll to bottom of Code > Layers > Add Layer > Custom layers > Choose the layer added above
+
+
+
+
+
+## Create an API Gateway trigger
+
+
+## Configure credentials and code
+
+
+### Environment variables
+
+
+The Lambda will be triggered locally using its built-in **`Test`** button; or by an 
+external entity via an API Gateway. This is covered below. 
+
+
+- Lambda function > Configuration > Environment variables > Edit > Add two variables from the twilio account.
+These are the User SID and the access token. They are loaded into program memory at the top of Lambda 
+execution.
+
+
+```
+acct_id_env          123456789012345678901234567890123456789012345678901234567890
+acct_token_env       ABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQR
+```
+
+
+These are loaded in code for example with: `acct_id_env = os.environment['acct_id_env']`.
+
+
+
 ### Test function
+
 
 A Lambda function comes with a built-in test mechanism (see function tabs in the Lambda console). 
 This makes use of a JSON specification of some key-value pairs so here we configure this to do
@@ -120,7 +164,9 @@ something of use in our overall process, specifically try and send a message to 
 The third parameter **`isIOT`** will be used to cause the Lambda to initiate a message without
 regard to parsing inbound content from an IOT device. 
 
+
 - Edit the test Event JSON read as follows:
+
 
 ```
 {
@@ -130,13 +176,12 @@ regard to parsing inbound content from an IOT device.
 }
 ```
 
+
 - Save, Test
 
-## Create an API Gateway trigger
-
-## Configure credentials and code
 
 ## Test communication in both directions
+
 
 ## Add a DynamoDB table
 
