@@ -6,7 +6,7 @@
 
 These notes are specific to composing the cloud element for a digital twin project on Amazon Web Services (AWS). 
 Detailed instructions and notes follow in subsequent sections. There are three primary services in play here: 
-A serverless functions ('AWS Lambda'), a serverless noSQL database 
+A serverless functions ('AWS Lambda'), a serverless NoSQL database 
 ('[DynamoDB](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.html)') 
 and an API endpoint visible to the outside world ('API Gateway').
 
@@ -237,8 +237,8 @@ The key **`isIOT`** in the test JSON differentiates a test run from an IOT devic
 
 [Top](#aws)
 
-* [This medium blog](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.html) 
-is a very helpful introduction to the AWS DynamoDB serverless noSQL database service.
+* [This documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.html) 
+is a good reference on the AWS serverless NoSQL database service 'DynamoDB'.
 * Create a DynamoDB table (See YouTube for walkthroughs; 
 [example](https://www.youtube.com/watch?v=9eHh946qTIk), [example](https://www.youtube.com/watch?v=2k2GINpO308),
 [example](https://www.youtube.com/watch?v=Al1xwYhQ-BM)
