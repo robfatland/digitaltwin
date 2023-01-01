@@ -241,12 +241,20 @@ The key **`isIOT`** in the test JSON differentiates a test run from an IOT devic
         * Sort key ('timestamp')
         * Table settings > Customize Settings
             * Read / Write capacity settings > On-demand
-    - Create table
+    * Create table
         * Note we have a resulting Amazon Resource Name (ARN: An unambiguous resource identifier)
             * This looks like **`arn:aws:dynamodb:us-west-2:123412341234:table/digitaltwin`**
 * Create / modify the **`digitaltwin`** Role used by the Lambda function: Add a DynamoDB policy
     * Console > IAM > Role > digitaltwin > Attach policies
     * Create a DynamoDB filter; find AmazonDynamoDBFullAccess Policy and attach this to the digitaltwin Role
+* In the AWS Console > DynamoDB > Tables > **`digitaltwin`** use **`Explore table items`** to review content
+    * Partition keys correspond to independent memory blocks, each up to 10GB
+    * Sort keys are more granular and { partition key + sort key } should be unique
+    * In the AWS Lambda function: **`import boto3`** enables working with this DynamoDB table as a programmatic resource
+        * **`get_item()`** recovers information from the **`digitaltwin`** table
+        * **`put_item()`** stores new data in this table
+
+
 
 
 #### Aside: AWS CLI
