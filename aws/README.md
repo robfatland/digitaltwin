@@ -5,7 +5,13 @@
 
 
 These notes are specific to composing the cloud element for a digital twin project on Amazon Web Services (AWS). 
-Detailed instructions and notes follow in subsequent sections.
+Detailed instructions and notes follow in subsequent sections. There are three primary services in play here: 
+A serverless functions ('AWS Lambda'), a serverless noSQL database 
+('[DynamoDB](https://medium.com/@corymaklin/tutorial-aws-part-5-the-basics-of-dynamo-db-amazons-non-relational-database-9be0cf500e6e)') 
+and an API endpoint visible to the outside world ('API Gateway').
+
+
+Here are the AWS-centric steps in building the cloud component of the digital twin demonstrator: 
 
 
 1. Establish an [AWS account](#aws_account) and sign in as an IAM User (not root)
@@ -231,7 +237,8 @@ The key **`isIOT`** in the test JSON differentiates a test run from an IOT devic
 
 [Top](#aws)
 
-
+* [This medium blog](https://medium.com/@corymaklin/tutorial-aws-part-5-the-basics-of-dynamo-db-amazons-non-relational-database-9be0cf500e6e) 
+is a very helpful introduction to the AWS DynamoDB serverless noSQL database service.
 * Create a DynamoDB table (See YouTube for walkthroughs; 
 [example](https://www.youtube.com/watch?v=9eHh946qTIk), [example](https://www.youtube.com/watch?v=2k2GINpO308),
 [example](https://www.youtube.com/watch?v=Al1xwYhQ-BM)
