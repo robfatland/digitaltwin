@@ -172,11 +172,95 @@ in order to test the Lambda function without necessarily having to run the IOT d
 ### Code
 
 
+The following code is not a 'finished result'. Rather it is used for testing the DynamoDB
+connection (3 transactions), for parsing an Event using the Lambda design console 'Test' 
+button, and for parsing simple messages from an IOT device. Corresponding code is 
+indicated by flag comments. 
+
+Note that near the top of the code four environment variables are read into program
+memory using **`os.environ['key name']`**. These correspond to environment variables
+set from the Configuration tab, `Environment variables` sub-section (left sidebar).
+
+
+```
+import base64                                # translate UDP message from the Arduino
+from   datetime import datetime              # for timestamps .now() UTC
+import boto3                                 # dynamodb resource connection
+from boto3.dynamodb.conditions import Key    # supporting queries
+import os                                    # access environment variable dictionary
+import twilio.rest                           # interact with the twilio service
+
+# possible future use: json, botocore.exceptions, decimal.Decimal
+
+# authentication credentials for the twilio service account
+acct_id_env = os.environ['acct_id_env']
+acct_token_env = os.environ['acct_token_env']
+
+# dynamodb table variables
+table_name = os.environ['table_name']
+action = os.environ['dynamodb_action']
+
+def lambda_handler(event, context):
+
+    dynamodb = boto3.resource("dynamodb")
+    table = dynamodb.Table(table_name)
+    
+    ############################
+    #
+    # DynamoDB test section
+    #
+    ############################
+    if action == 'get_item':
+        # specifies both partition and sort keys
+        response = table.get_item(Key={"message": "yyyyyyy", "timestamp": "2023-01-01 18:16:02.629135"})
+        if "Item" in response: print(".get_item() returned Item:", response['Item'])
+        else:                  print('No "Item" in get_item() response')
+    elif action == 'put_item':
+        newsum, now = 94.1234567, str(datetime.now())
+        print(now, newsum)
+        response = table.put_item(
+            Item={"message": "yyyyyyy", "timestamp": now,
+                  "data": str(3.14), "runsum": str(newsum), "otherthing": "Xtra"})
+        if 'ResponseMetadata' in response: print(response)
+        else:                              print('No "ResponseMetadata" in response.')
+    elif action == 'query':
+        # partition key only example: response = table.query(KeyConditionExpression=Key("message").eq("yyyyyyy"))
+        # partition key and sort key example:
+        response = table.query(KeyConditionExpression=Key("message").eq("yyyyyyy") & Key('timestamp').between('2023-01-01 18:14:45', '2023-01-01 18:16:36'))
+        if "Items" in response: 
+            for i in range(len(response["Items"])):
+                print(response["Items"][i])
+        else: print('No "Items" in query response.')
+   
+    ###########################
+    #
+    # Console Test Button: Event parsing
+    #
+    ###########################
+    if 'isIOT' in event.keys() and not event['isIOT'] == 'True':                      # local Test
+        data, user = float(event['testdata']), event['testuser']
+        print('testuser ' + user + ' (not IOT) mentions some data: ' + '{:.9f}'.format(data))
+        return { 'statusCode': 200 }
+    
+    ###########################
+    #
+    # IOT Device Message: Event parsing
+    #
+    ###########################
+    elif 'queryStringParameters' in event.keys():                                     # inbound from IOT device
+        print(str(event))                                                             # yaml > use https://codebeautify.org/yaml-pretty-print
+        print(base64.b64decode(event["queryStringParameters"]["Payload"]).decode())
+        this_sim = event["queryStringParameters"]["SimUniqueName"]
+        client = twilio.rest.Client(acct_id_env, acct_token_env)
+        result = client.supersim.v1.ip_commands.create(sim=this_sim, device_port=6969, payload="aye!")
+        return { 'statusCode': 200, 'payload': str(event) }
+```
+
 ### Environment variables
 
 
 The Lambda will be triggered locally using its built-in **`Test`** button; or by an 
-external entity via an API Gateway. This is covered below. 
+external IOT device via the API Gateway (see below). 
 
 
 - Lambda function > Configuration > Environment variables > Edit > Add two variables from the twilio account.
@@ -189,12 +273,23 @@ acct_id_env          12345678901234567890123456789012345678901234567890123456789
 acct_token_env       ABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQRABCDEFGHIJKLMNOPQR
 ```
 
+Add two more environment variables towards controlling the DynamoDB interaction of the Lambda function:
 
-These are loaded in code for example with: `acct_id_env = os.environment['acct_id_env']`.
+```
+table_name           digitaltwin
+dynamodb_action      put_item
+```
+
+For the latter: The code handles `put_item`, `get_item` and `query`. Anything else will just skip that part.
+When running the Lambda in test mode the first few times: The idea would be to use `put_item` to place a 
+few items into the table.
+
+
+As noted above, environment variables are loaded into the Lambda program during execution.
 
 
 
-### Test function
+### Lambda designer console Test utility
 
 
 Under normal operation an IOT device sends a message to the Twilio service which in turn 
@@ -205,8 +300,9 @@ console allows us to configure the **`event`** that is passed to the Lambda even
 
 
 The Test event is configured using the JSON key-value table on the Test tab. Eventually
-we will use this Lambda trigger path to send a message to an IOT device.
-The key **`isIOT`** in the test JSON differentiates a test run from an IOT device run.
+we use this Lambda trigger path to send a message to an IOT device.
+The key **`isIOT`** has a boolean value for whether this Lambda trigger is
+to be understood as 'from an IOT device'.
 
 
 - Edit the test Event JSON table to read as follows:
