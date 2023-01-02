@@ -1,7 +1,7 @@
 # A digital twin project
 
 
-> Addressing the physical sensor communication with the in silico model.
+> Building sensor communication paths to cloud-based data systems
 
 
 * [Project background](https://github.com/robfatland/digitaltwin/tree/main/background)
