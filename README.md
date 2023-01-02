@@ -50,6 +50,9 @@ what's-to-learn:
 - A set of diagnostic and debugging skills to progress towards and maintain a working system
 
 
+For a more granular view please see the [narrative notes](https://github.com/robfatland/digitaltwin/tree/main/narrative) in this repository.
+
+
 ## Recipe: Sensor > Arduino > cellular modem > message broker > cloud > database
 
 
