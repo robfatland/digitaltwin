@@ -1,7 +1,7 @@
 # A digital twin project
 
 
-> Building sensor communication paths to cloud-based data systems
+> Building a two-way communication path between a sensor and a cloud-based data system
 
 
 * [Project background](https://github.com/robfatland/digitaltwin/tree/main/background)
@@ -28,13 +28,15 @@ The documentation tries to follow two guidelines
 - Place deeper information into ancillary documents
 
 
-## What are we signing up to learn here? 
+## What are we signing up to learn? 
 
 
-Rather a lot, in fact. No particular component is terribly difficult to master. However
-if these tools and technologies are unfamiliar one is looking at a considerable time
-investment to bring it all together, on the order of weeks to months. A sketch of
-what's-to-learn:
+In the interest of not making this seem easier than it is, the answer is 'Rather a lot, in fact.' 
+None of the component pieces is terribly difficult to master. However
+if these tools and technologies are unfamiliar then we are looking at a considerable time
+investment, on the order of weeks initially; followed by further refinement of the picture
+over the course of a research project. A sketch of what's-to-learn follows, and a 
+more elaborated version can be found [here](https://github.com/robfatland/digitaltwin/tree/main/narrative).
 
 
 - A development environment and programming language for an IOT device (here: Arduino UNO)
@@ -50,67 +52,81 @@ what's-to-learn:
 - A set of diagnostic and debugging skills to progress towards and maintain a working system
 
 
-For a more granular view please see the [narrative notes](https://github.com/robfatland/digitaltwin/tree/main/narrative) in this repository.
+Again: A more granular view is available as '[narrative notes](https://github.com/robfatland/digitaltwin/tree/main/narrative)'.
 
 
-## Recipe: Sensor > ... > database
+## Recipe: Sensor > ... > Database > .... > Sensor
 
 
-A [digital twin](https://en.wikipedia.org/wiki/Digital_twin) is technically the *in silico* model
-connected up with data streams from real world sensors. This repository is concerned
-with the latter. A more complete picture accommodates actuation commands from the
-digital system back to the IOT sensors.
+A [digital twin](https://en.wikipedia.org/wiki/Digital_twin) is technically an 
+*in silico* model that 'twins up' with a real world environment of interest. 
+Connectivity between them generally involves some collection of sensors. 
 
 
-A toy example: Suppose we are interested in measuring ambient light levels at some
+This repository is concerned with the link between sensors and the digital twin. We
+are interested in this link working in both directions to accommodate actuation commands 
+from the digital twin to the sensor array. Incidentally I will use 'IOT sensor' to 
+indicate a microcomputer-sensor-modem assembly.
+
+
+Suppose we are interested in measuring ambient light at some
 location over time. A microcomputer such as an Arduino or a Raspberry Pi
 can digitize a voltage mediated by a cadmium sulfide
 [photoresistor](https://en.wikipedia.org/wiki/Photoresistor)
-for this purpose. The question is then how to recover
-the data. This **Cloud Solution** 
-relies upon
-cellular network infrastructure. The resulting system is reliable,
+for this purpose with the communication path riding along both
+the cellular network and the internet.
+This solution is reliable,
 low cost to build and operate, and requires little maintenance. 
 On the down side, deployment of sensors is constrained
 to locations with
 [cell phone coverage](https://www.fcc.gov/BroadbandData/MobileMaps/mobile-map).
-Our anticipated communication bandwidth is low in comparison to that used
-in voice communication so we use a low-cost mechanism that 'rides along' on
-cellular network infrastructure. This uses a communication protocol called the 
-User Datagram Protocol ([UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol)).
+
+
+We want to acknowledge the profusion of jargon for a moment here.
+As an example the terms 'UDP' and 'IP' arise where both P's stand for 'protocol'.
+Learning the intricacies of these protocols should be *optional*. The practical
+approach we try for is to identify and hopefully de-mystify jargon and indicate 
+an initial 'minimum viable familiarity' necessary. Hence: 
+Our solution here has a presumed low required communication bandwidth (say relative to 
+voice communication). This allows us to pay for a cheap service that makes 
+use of cellular network infrastructure. This service
+uses [UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol)
+and [IP](https://en.wikipedia.org/wiki/Internet_Protocol)
+for the transport and internet layers respectively.
+Practically speaking these fairly simple protocols drive message construction 
+and operational debugging.
 
 
 
-Eventually we intend this demonstrator to include 
-three autonomous IOT sensor assemblies. The recipe 
-uses the Arduino stack as it is reasonably low-cost.
-The disadvantage that it does not feature a lot of 
-native processing power or memory.
-
-
-We configure the IOT sensors to report to
+The 'demonstrator' system described here will include 
+three IOT sensors based on the low-cost Arduino microcomputer.
+The tradeoff (say compared to using a Raspberry Pi) is that
+an Arduino UNO does not have a lot of native processing power 
+or memory.
+We configure the three IOT sensors to report to
 the Amazon Web Services ('AWS'), 
 Google Cloud Platform ('GCP') and 
 Microsoft Azure ('Azure') clouds. 
-Each cloud will reply back 
-to the sensors establishing two-way communication.
 
 
 
-The Arduino is attached to a cellular modem (a shield or Arduino 
-add-on circuit board). The cellular modem 
+
+The Arduino is attached to a cellular modem (an Arduino 
+add-on circuit board or 'shield'). The cellular modem 
 uses a  SIM card to connect to, authenticate, and send and receive 
 data via the cellular network. 
-Our system will make use of commercial assets owned
-by T-Mobile, Verizon and other carriers; but 
-we do not establish contracts with each of these
-commercial cell phone carriers. Instead we establish a single
-contract with a third party company that provides programmable 
-communication tools for sending and receiving data. This company 
-(Twilio) in turn establishes necessary permissions with the 
-commercial carriers. In effect Twilio acts as both a middle man 
-between us and the commercial carriers, and as a message broker 
-between our Arduino device and the public cloud. 
+Our system will make use of commercial infrastructure from
+T-Mobile, Verizon, AT&T and other carriers; but 
+we do not need to establish contracts with each of these
+commercial cell phone carriers. Rather we establish a single
+contract with a third party company called *Twilio* that provides programmable 
+communication tools for sending and receiving data. 
+Twilio in turn handles relationships with the 
+commercial carriers; so Twilio is both the 'middle man' 
+between us and commercial carriers, and also acts as 
+a message broker connecting the cellular network and
+the internet. We establish a cloud end-point (URL) 
+and register this with Twilio.
 
 
 Messages that arrive
@@ -120,8 +136,7 @@ herein as *serverless* because it is run as a service
 with no underlying server visible to us, the project developers. 
 
 
-The features of the prototype system described here include
-low cost, low maintenance and high reliability.
+Solution features include:
 
 
 - A prototype system will cost less than $100 to assemble
@@ -131,21 +146,33 @@ low cost, low maintenance and high reliability.
 - Data transfer is low maintenance
     - It is built on *services* rather than owned hardware
         - There are no servers, no network cards etcetera
-- There is no dependency on WiFi 
-- Maintenance effort centers on the Arduino-based sensor
-    - It requires a stable power supply
-    - Ruggedization is generally necessary
-    - Research projects evolve over time
-        - This may result in modifying the Arduino system
-            - Change the hardware configuration
-            - Re-program the Arduino
-            - Re-program the cloud-based serverless data parser
-- Data on the cloud can be made selectively accessible
+- The system has no dependency on WiFi 
+- Maintenance centers on the (possibly ruggedized) Arduino-based IOT sensor
+    - This requires a stable power supply
+    - Research projects tend to evolve
+        - Hence: Modify the IOT sensor
+            - hardware configuration
+            - Arduino operating code
+        - Modify the corresponding cloud-based data system 
+- Data on the cloud can be made selectively accessible...
     - ...to collaborators
     - ...to other approved third parties
 
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/digitaltwin_signal_path.png" alt="drawing" width="500"/>
+
+
+# How it should go from here
+
+
+Write a section here that directs in sequence to
+
+- UNO, IDE, modem, sensor build
+- Twilio configuration
+- AWS component
+
+
+Then rebuild the subsequent material into those pages.
 
 
 ## Resource links
@@ -285,7 +312,8 @@ Part 3 of this document has an example of sending an IP command to the device.
 
 
 
-# Remaining source material
+# Add'l source material
+
 
 ### To Do
 
