@@ -1,13 +1,3 @@
-### To Do
-
-
-- Expand Lambda a bit to provide a testable return directive
-- Create another Lambda that initiates contact to the Arduino (e.g. set servo angle)
-- Build an S3 with a CSV file that can be appended by yet a third Lambda
-- Out of curiosity what do the various libraries 'not in use' do? (Decimal etcetera)
-- Reorganize material to an AWS sub-folder here
-
-
 # digitaltwin
 
 
@@ -25,7 +15,7 @@
 This repository is a circa-2022 recipe for combining a
 simple sensor with a cellular modem for two-way communication with the cloud.
 It is motivated by the 'digital twin' concept and its technological antecedent
-'Internet of Things' (IOT).
+the 'Internet of Things' (IOT).
 
 
 The documentation tries to follow two guidelines
@@ -35,9 +25,35 @@ The documentation tries to follow two guidelines
 - Place deeper information into ancillary documents
 
 
-## Recipe
+## What are we signing up to learn here? 
 
-### Sensor - Arduino - cellular modem - broker - cloud - digital twin
+
+Rather a lot, in fact. No particular component is terribly difficult to master. However
+if these tools and technologies are unfamiliar one is looking at a considerable time
+investment to bring it all together, on the order of weeks to months. A sketch of
+what's-to-learn:
+
+
+- A development environment and programming language for an IOT device (here: Arduino UNO)
+    - ...including a sensor interface that produces some form of recognizable data (here: a light sensor)
+    - ...and possibly an actuator (here: a laser diode and a servo motor)
+- The interface / communication protocol from the IOT device to a cellular modem (here: Internet Protocol and User Datagram Protocol)
+- A browser-based interface to a middleman message service (here: Twilio)
+- A browser-based console interface to a public cloud provider (here: AWS and eventually also Azure and GCP)
+    - ...leading to standing up three essential integrated cloud components
+        - An internet-facing API service for two-way message passing, cloud < -- > IOT device (here: AWS API Gateway)
+	- A NoSQL database service (here: AWS DynamoDB)
+	- A serverless function for connecting the IOT device data stream to the above database (here: AWS Lambda)
+- A set of diagnostic and debugging skills to progress towards and maintain a working system
+
+
+## Recipe: Sensor > Arduino > cellular modem > message broker > cloud > database
+
+
+The [digital twin](https://en.wikipedia.org/wiki/Digital_twin) is technically the *in silico* model
+connected up with data streams from real world sensors. This entire repository is concerned
+with the latter; but a more complete picture allows for actuation commands to emanate from the
+data center on the cloud back to the IOT sensors. Let's begin with a toy example.
 
 
 Suppose we are interested in measuring ambient light levels at some
@@ -60,10 +76,17 @@ User Datagram Protocol ([UDP](https://en.wikipedia.org/wiki/User_Datagram_Protoc
 
 
 
-Suppose we embark on a 'digital twin'
+To build a 'digital twin'
 project that depends upon data from three autonomous 
-sensor assemblies **A**, **B** and **C** built on the Arduino
-stack. We configure them to report sensor measurements to
+sensor assemblies **A**, **B** and **C** we have to
+make some hardware decisions. In this case the recipe 
+is built using the Arduino
+stack. This has the advantage of being reasonably low-cost
+and the disadvantage that it does not feature a lot of 
+native processing power or memory.
+
+
+We configure them to report sensor measurements to
 the Amazon Web Services ('AWS'), 
 Google Cloud Platform ('GCP') and 
 Microsoft Azure ('Azure') clouds respectively. 
@@ -124,14 +147,8 @@ low cost, low maintenance effort and high reliability.
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/digitaltwin_signal_path.png" alt="drawing" width="500"/>
 
-## Pivot to project description
 
-
-The remainder of this document provides a 'build recipe' in outline form
-with references to supporting detail documentation.
-
-
-### Sources
+## Resource links
 
 
 - An Arduino UNO R3 runs USD30 or about USD45 as a 'starter kit' with some useful peripheral hardware
@@ -206,7 +223,8 @@ actually                                        // serial interface counts chars
                                                 //   character as 'send ctrl-z (0x1a)' and this terminates the send.
 ```
 
-### Twilio monitor 
+
+## Twilio monitor 
 
 First step in establishing the from/to communication: Arduino to twilio.
 
@@ -224,7 +242,7 @@ First step in establishing the from/to communication: Arduino to twilio.
 
 
 
-### Twilio command line interface
+## Twilio command line interface
 
 
 Second step in establishing the from/to communication: twilio to Arduino.
@@ -252,19 +270,33 @@ message appears in the serial monitor we have successfully sent data to our devi
 * **`twilio api:supersim:v1:ip-commands:create --sim a --payload "calculon says yes" --device-port 6969`**
 
 
+
 How to discover this command format? First, emphasis: We use **IP** commands for SuperSIM 
 UDP communication. The cheat sheet for twilio IP commands is found at
 [this URL](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands)
 Part 3 of this document has an example of sending an IP command to the device.
 
 
+
+
+
+# Remaining source material
+
+### To Do
+
+
+- Expand Lambda a bit to provide a testable return directive
+- Create another Lambda that initiates contact to the Arduino (e.g. set servo angle)
+- Build an S3 with a CSV file that can be appended by yet a third Lambda
+- Out of curiosity what do the various libraries 'not in use' do? (Decimal etcetera)
+- Reorganize material to an AWS sub-folder here
+
+
+
+
+
 > It would be helpful to sort out *who* IP commands go to: Twilio or the Arduino or the shield.
 
-
-#### Motivation and Digression
-
-
-##### This should go into an ancillary
 
 
 We want to issue commands to the cellular modem, eventually to include 'send this string to an endpoint
@@ -297,69 +329,10 @@ can now be used to test **`AT`** cellular modem commands interactively. As noted
 We type in strings, hit return; the string goes to the Arduino and is passed along
 to the SIM7000; and vice versa we see the response message.
 
-
-### From Configuration to Communication
-
-
-This section outlines the process of getting two-way communication running 
-programmatically between the Arduino and the cloud.
-
-
-#### Twilio
     
     
-##### This should go into an ancillary
-    
-    
-##### Expand on what is an NAP and etc: Better capture on second time around
-    
 
-- Set up an account at [twilio.com](https://twilio.com)
-- Purchase some SuperSIM cards; this example project uses three of them
-    - Printed on the card is a long identifier code
-        - Note the last 4 digits of the Super SIM code you are using
-- Configure Twilio to be ready to receive messages from the cellular modem
-    - This in turn permits us to register and receive a Twilio-internal ip address
-    - Log in to twilio.com > IoT > Super Sim > SIMS
-    - Use the digits noted above to identify and select your SIM card
-        - The resulting configuration wizard requires a defined Fleet
-            - Create a Fleet: It requires an NAP
-                - Create an NAP; use the 'instant global' option
-            - Use a dummy Lambda URL for your SIM (temporarily)
-            - Choose HTTP GET
-                - Later this might necessarily be HTTP POST
-        - Set the SIM status to **Ready**
-            - We use IP commands, not SMS
-            - Also need a note on the UDP protocol
-        - Return to the SIMS dashboard and confirm your SIM is ready to go
-            
-    
-
-#### Serverless on cloud
-
-##### Instructions for revising this section:
-    
-- Abstract-ize this to the punchline of a URL
-- Move AWS-specific details down lower
-- Outline the delta between research code and Naomi code
-
-
-Some example code for building the AWS component of the signal chain is
-[here](https://github.com/naclomi/emojiomi/blob/main/infra/api/device_message/lambda_function.py).
-Focus on the `data[]` structure: That will be the payload. 
-
-
-Use API Gateway to establish a URL for messages from Twilio. Twilio will be acting as 
-a relay agency, passing messages between the Arduino device and the Lambda function. 
-When we move on to using Azure and GCP we will need additional vocabulary for equivalent
-services.
-
-
-Upon completing the Lambda: Return to the Twilio entry for the SIM and change the
-connection URL to that of the Lambda API Gateway.
-
-
-#### Interactive session: IDE to cellular modem
+## Interactive session: IDE to cellular modem
 
 
 Use [this walk-through](https://github.com/robfatland/digitaltwin/blob/main/AT.md) 
@@ -378,11 +351,8 @@ Arduino, vice versa). The Arduino message will be base64 encoded so
 use the translator.
 
 
-#### Test: Messaging from the twilio app to the Arduino
+- est: Messaging from the twilio app to the Arduino
 
-    
-##### To ancillary
-    
 
 Go to [this link](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands#send-ip-commands-to-the-device).
 
@@ -392,27 +362,37 @@ send an IP Command from a computer to the Super SIM. The text should show up in 
 IDE Serial Monitor. 
 
 
-#### Programmatic use of the cellular modem
-
-##### Ancillary
 
 
-Update the sketch to send a simple payload periodically to twilio.
+- Expand on what is an NAP and etc
+- Set up an account at [twilio.com](https://twilio.com)
+- Purchase some SuperSIM cards; this example project uses three of them
+    - Printed on the card is a long identifier code
+        - Note the last 4 digits of the Super SIM code you are using
+- Configure Twilio to be ready to receive messages from the cellular modem
+    - This in turn permits us to register and receive a Twilio-internal ip address
+    - Log in to twilio.com > IoT > Super Sim > SIMS
+    - Use the digits noted above to identify and select your SIM card
+        - The resulting configuration wizard requires a defined Fleet
+            - Create a Fleet: It requires an NAP
+                - Create an NAP; use the 'instant global' option
+            - Use a dummy Lambda URL for your SIM (temporarily)
+            - Choose HTTP GET
+                - Later this might necessarily be HTTP POST
+        - Set the SIM status to **Ready**
+            - We use IP commands, not SMS
+            - Also need a note on the UDP protocol
+        - Return to the SIMS dashboard and confirm your SIM is ready to go
+- Abstract-ize this to the punchline of a URL
+- Outline the delta between research code and NA code
+- [NA ref code](https://github.com/naclomi/emojiomi/blob/main/infra/api/device_message/lambda_function.py).
+    - Focus on the `data[]` structure: That will be the payload. 
+- Use API Gateway to establish a URL for messages from Twilio. 
+    - Twilio will be acting as a relay agency, passing messages between the Arduino device and the Lambda function. 
+    - When we move on to using Azure and GCP we will need additional vocabulary for equivalent services
+    - Maybe this is one fleet per cloud provider
+    - The Twilio destination might have been left blank: So redirect to API Gateway
 
-
-This should forward to the Lambda function.
-
-
-Have Lambda send something back.
-
-
-This should appear in the Serial window.
-
-
-
-
-
-# Unsorted content
 
 
 * [Super SIM IP command reference](https://www.twilio.com/docs/iot/supersim/get-started-with-super-sim-ip-commands)
@@ -420,24 +400,16 @@ This should appear in the Serial window.
 * **`sudo apt install tree`** installs a useful tree-view version of recursive `ls` called, of course, `tree`
 
 
-##### [AWS](https://github.com/robfatland/digitaltwin/blob/main/aws/README.md)
+- [AWS](https://github.com/robfatland/digitaltwin/blob/main/aws/README.md)
+	- Serverless functions on AWS are called *Lambda functions*
+	    - Very low cost per thousands of executions (compare 86400 seconds per day)
+	- An AWS Lambda function executes in response to a *trigger*
+	    - We work with two triggers: A Test trigger and an API Gateway trigger
+		- Test triggers are configured and run from the Lambda designer pages of the AWS console
+		- API Gateway triggers originate from a separate AWS service, the **`API Gateway`**
+		    - The API Gateway provides an internet-accessible URL
+		    - This URL is registered with Twilio for routing IOT sensor-originating messages
+		    - This URL is also used by a Python program running on a development system
+	- The [AWS-specific cloud configuration notes are here.](https://github.com/robfatland/digitaltwin/blob/main/aws/README.md)
 
-
-- Serverless functions on AWS are called *Lambda functions*
-    - Very low cost per thousands of executions (compare 86400 seconds per day)
-- An AWS Lambda function executes in response to a *trigger*
-    - We work with two triggers: A Test trigger and an API Gateway trigger
-        - Test triggers are configured and run from the Lambda designer pages of the AWS console
-        - API Gateway triggers originate from a separate AWS service, the **`API Gateway`**
-	    - The API Gateway provides an internet-accessible URL
-	    - This URL is registered with Twilio for routing IOT sensor-originating messages
-	    - This URL is also used by a Python program running on a development system
-- The [AWS-specific cloud configuration notes are here.](https://github.com/robfatland/digitaltwin/blob/main/aws/README.md)
-
-
-#### Azure
-
-
-
-#### Google Cloud
     
