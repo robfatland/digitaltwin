@@ -1,4 +1,7 @@
-# digitaltwin
+# A digital twin project
+
+
+> Addressing the physical sensor communication with the in silico model.
 
 
 * [Project background](https://github.com/robfatland/digitaltwin/tree/main/background)
