@@ -1,5 +1,11 @@
 # Hurdles and Opportunities
 
+
+This page is an accumulation of notes that extend beyond the basic 'build recipe'.
+
+
+## Intro
+
 What are the technical challenges involved in the 'recipe' given here? 
 What are the non-recipe challenges -- let's call them opportunities -- to
 take other pathways to digital twin success?
