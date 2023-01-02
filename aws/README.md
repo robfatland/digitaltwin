@@ -327,11 +327,24 @@ to be understood as 'from an IOT device'.
 [Top](#aws)
 
 
+- On the IOT sensor IDE: Create a program or manual interface that sends a simple text payload to the Twilio service.
+- Configure Twilio to refer these messages (organized by 'fleet') to the API Gateway
+- One such message will create an **`event`** that is passed to the Lambda function
+    - The execution of the Lambda will produce output in its log files
+    - These log files can be accessed through the AWS browser console
+        - Lambda design console > Monitor tab > View logs in CloudWatch > choose most recent
+- Once this sequence of events is established as working: Send a message from Lambda back to the IOT sensor
+    - Both messages IOT > Lambda and Lambda > IOT should be present in Twilio's message logs
+- The return message from Lambda > IOT should appear in the Serial connection window of the IDE
+- Get the IOT sensor code running autonomously
+
+
 
 ## Add a DynamoDB table
 
 
 [Top](#aws)
+
 
 * [This documentation](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/GettingStarted.html) 
 is a good reference on the AWS serverless NoSQL database service 'DynamoDB'.
@@ -356,20 +369,34 @@ is a good reference on the AWS serverless NoSQL database service 'DynamoDB'.
     * In the AWS Lambda function: **`import boto3`** enables working with this DynamoDB table as a programmatic resource
         * **`get_item()`** recovers information from the **`digitaltwin`** table
         * **`put_item()`** stores new data in this table
+        * **`query()`** interrogates the table (zero or one or more results possible)
 
 
+The basic pieces are in place at this point. Continuation work might include:
+
+
+- Formalizing the data stream to DynamoDB
+- Build equivalent functionality on Azure and GCP
+- Construct an actuator scenario with directives sent from the cloud back to the IOT sensors
+- Monitor operation over time to get a sense of system reliability
 
 
 #### Aside: AWS CLI
 
 
-Can interact with DynamoDB using the CLI. Example (after config): 
+The **`boto3`** library is a very convenient means of interacting with the DynamoDB service. For testing and
+debugging purposes one can also interact with DynamoDB using the AWS command line interface (CLI). 
+This is free to download and install on the development system; so it looks and runs like any other Linux utility.
+An example command (after the CLI is configured with user credentials) is: 
 
 ```
 aws sts get-caller-identity
 ```
 
-to verify we are who we think we are.
+This verifies that we are who we claim to be (IAM User, correct account and so forth). Each cloud has such 
+a CLI and each is a potentially powerful debugging tool. In the build narrative (recipe) presented here 
+the CLI is not essential as we have the AWS console, the Twilio interface and the IOT sensor IDE to work
+with.
 
 
 
@@ -377,6 +404,11 @@ to verify we are who we think we are.
 
 
 [Top](#aws)
+
+
+This is a placeholder section. The idea here is to write code into the Lambda that supports programmatic
+queries from the development system. This enables us to pull data subsets or check system health without
+having to log in to the AWS console. 
 
 
 
