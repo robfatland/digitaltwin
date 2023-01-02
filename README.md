@@ -53,70 +53,64 @@ what's-to-learn:
 For a more granular view please see the [narrative notes](https://github.com/robfatland/digitaltwin/tree/main/narrative) in this repository.
 
 
-## Recipe: Sensor > Arduino > cellular modem > message broker > cloud > database
+## Recipe: Sensor > ... > database
 
 
-The [digital twin](https://en.wikipedia.org/wiki/Digital_twin) is technically the *in silico* model
-connected up with data streams from real world sensors. This entire repository is concerned
-with the latter; but a more complete picture allows for actuation commands to emanate from the
-data center on the cloud back to the IOT sensors. Let's begin with a toy example.
+A [digital twin](https://en.wikipedia.org/wiki/Digital_twin) is technically the *in silico* model
+connected up with data streams from real world sensors. This repository is concerned
+with the latter. A more complete picture accommodates actuation commands from the
+digital system back to the IOT sensors.
 
 
-Suppose we are interested in measuring ambient light levels at some
+A toy example: Suppose we are interested in measuring ambient light levels at some
 location over time. A microcomputer such as an Arduino or a Raspberry Pi
 can digitize a voltage mediated by a cadmium sulfide
 [photoresistor](https://en.wikipedia.org/wiki/Photoresistor)
 for this purpose. The question is then how to recover
-the observational data. This **Cloud Solution** 
-repository describes a particular means that relies upon
-cell phone infrastructure. The resulting system is reliable,
+the data. This **Cloud Solution** 
+relies upon
+cellular network infrastructure. The resulting system is reliable,
 low cost to build and operate, and requires little maintenance. 
-Deployment is constrained
+On the down side, deployment of sensors is constrained
 to locations with
 [cell phone coverage](https://www.fcc.gov/BroadbandData/MobileMaps/mobile-map).
-Our anticipated data rate is low in comparison to that used
-in voice communication. As a result we use a cheaper mechanism
-that piggybacks on
-the cellular network infrastructure using a communication protocol called the 
+Our anticipated communication bandwidth is low in comparison to that used
+in voice communication so we use a low-cost mechanism that 'rides along' on
+cellular network infrastructure. This uses a communication protocol called the 
 User Datagram Protocol ([UDP](https://en.wikipedia.org/wiki/User_Datagram_Protocol)).
 
 
 
-To build a 'digital twin'
-project that depends upon data from three autonomous 
-sensor assemblies **A**, **B** and **C** we have to
-make some hardware decisions. In this case the recipe 
-is built using the Arduino
-stack. This has the advantage of being reasonably low-cost
-and the disadvantage that it does not feature a lot of 
+Eventually we intend this demonstrator to include 
+three autonomous IOT sensor assemblies. The recipe 
+uses the Arduino stack as it is reasonably low-cost.
+The disadvantage that it does not feature a lot of 
 native processing power or memory.
 
 
-We configure them to report sensor measurements to
+We configure the IOT sensors to report to
 the Amazon Web Services ('AWS'), 
 Google Cloud Platform ('GCP') and 
-Microsoft Azure ('Azure') clouds respectively. 
-Each cloud will send control guidance back 
-to the sensors to demonstrate two-way communication.
+Microsoft Azure ('Azure') clouds. 
+Each cloud will reply back 
+to the sensors establishing two-way communication.
 
 
 
-Additional technology is required between the Arduino and
-the cloud to complete
-this construction. We use a cellular modem in the form
-of an Arduino shield (an add-on circuit board) to connect
-to the cellular network. Specifically this cellular modem 
-uses a  SIM card to connect to, authenticate, and send and receive data. 
-While our data transfer uses commercial assets owned
-by T-Mobile, Verizon etcetera, 
-we do not establish contracts with commercial cell phone 
-carriers. Instead we establish a contract with a
-third party company that provides programmable communication tools
-for sending and receiving data. This company (Twilio) in turn
-establishes necessary permissions with the commercial carriers. 
-In effect Twilio acts as both a middle man between us and the 
-commercial carriers, and as a message broker between our 
-Arduino device and the public cloud. 
+The Arduino is attached to a cellular modem (a shield or Arduino 
+add-on circuit board). The cellular modem 
+uses a  SIM card to connect to, authenticate, and send and receive 
+data via the cellular network. 
+Our system will make use of commercial assets owned
+by T-Mobile, Verizon and other carriers; but 
+we do not establish contracts with each of these
+commercial cell phone carriers. Instead we establish a single
+contract with a third party company that provides programmable 
+communication tools for sending and receiving data. This company 
+(Twilio) in turn establishes necessary permissions with the 
+commercial carriers. In effect Twilio acts as both a middle man 
+between us and the commercial carriers, and as a message broker 
+between our Arduino device and the public cloud. 
 
 
 Messages that arrive
@@ -127,7 +121,7 @@ with no underlying server visible to us, the project developers.
 
 
 The features of the prototype system described here include
-low cost, low maintenance effort and high reliability.
+low cost, low maintenance and high reliability.
 
 
 - A prototype system will cost less than $100 to assemble
@@ -180,16 +174,20 @@ low cost, low maintenance effort and high reliability.
 
 <img src="https://github.com/robfatland/digitaltwin/blob/main/i/ATflow.png" alt="drawing" width="400"/>
 
-### Arduino Power
+
+## Arduino Power
+
 
 The Arduino board can operate on power delivered by a USB cable. However the DFRobot cellular modem
 can draw power in excess of what is available by this means. Therefore
+
 
 - Obtain a 'barrel plug' power supply to power up the Arduino + DFRobot SIM7000 shield
 - Attach a USB cable from the development computer to the Arduino
 
 
-### Library installation
+## Arduino Library installation
+
 
 In the Arduino IDE: Use the IDE Tools > Manage Libraries... menu to start the Library Manager on the left side of the IDE.
 Enter **`DFRobot_SIM7000`** in the search bar and install this library as well as any dependencies per the prompt.
@@ -232,8 +230,9 @@ actually                                        // serial interface counts chars
 
 ## Twilio monitor 
 
-First step in establishing the from/to communication: Arduino to twilio.
+First step in establishing the from/to communication: Arduino to Twilio.
 
+* Establish a Twilio account
 * Log in to the twilio.com console
 * Select at upper left the **Monitor** tab
 * Expand **Logs**, select **Super SIM**
