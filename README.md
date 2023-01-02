@@ -46,10 +46,15 @@ more elaborated version can be found [here](https://github.com/robfatland/digita
 - A browser-based interface to a middleman message service (here: Twilio)
 - A browser-based console interface to a public cloud provider (here: AWS and eventually also Azure and GCP)
     - ...leading to standing up three essential integrated cloud components
-        - An internet-facing API service for two-way message passing, cloud < -- > IOT device (here: AWS API Gateway)
-	- A NoSQL database service (here: AWS DynamoDB)
-	- A serverless function for connecting the IOT device data stream to the above database (here: AWS Lambda)
-- A set of diagnostic and debugging skills to progress towards and maintain a working system
+        - An internet-facing API service for messaging, cloud < -- > IOT device (AWS API Gateway, GCP API Gateway, Azure API Management)
+	- A NoSQL database service (AWS DynamoDB, GCP Bigtable, Azure Cosmos DB)
+	- A serverless function connecting IOT sensor messages to this database (AWS Lambda, Azure Functions, Google Cloud Functions)
+- Diagnostic and debugging skills; includes working familiarity with:
+    - The cellular modem command set
+    - NoSQL `put`, `get`, `query`
+    - Cloud serverless function design and debugging (here: using Python)
+    - IOT sensor IDE (here: the Arduino IDE uses a C/C++ 'dialect')
+    - Communication service console (here: Twilio)
 
 
 Again: A more granular view is available as '[narrative notes](https://github.com/robfatland/digitaltwin/tree/main/narrative)'.
