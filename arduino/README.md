@@ -1,6 +1,36 @@
 # Arduino UNO
 
 ```
+// digitaltwin.ino prototype reporting / responding for Arduino UNO + DFRobot SIM7000
+//   cellular modem. Note 2 serial connections: To cellular modem and to IDE: are 
+//   respectively modemSerial and Serial.
+// 
+// Key to comments
+// "// ?"" is open questions; "// !" for to-do list items; "// *" for documentation to preserve
+//
+// Code sources:
+//   ATtest.ino for cellular modem pass-thru from IDE
+//   emojiomi code for how to do it right (includes NTP, memory optimization, HMAC hashing, etc)
+//   servo_tic_toc.ino for some sensor stuff
+// 
+// * Some notes to transcribe
+// * F() places argument into flash memory rather than program memory: keep if possible
+// * authentication via (4 + 16) NTP + HMAC hash of payload: Used SpritzCipher.h and EEPROM.h
+// * NA points out that git is a useful way of getting a device to report what version it runs
+// * and this was built on git-version.h; very elegant and cf alt definition of Big Data.
+// * NTP stuff redacted; time.h
+// * Watch the Serial IDE echo: Periodically (every 10 sec or so there is a health check...)
+
+
+
+
+
+
+
+
+
+
+
 // * "Opportunities" += ntp, readout screen, hmac auth, onboard SD storage
 // #include <Servo.h>
 // Servo servo;
