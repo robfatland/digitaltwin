@@ -18,11 +18,11 @@ Here are the AWS-centric steps in building the cloud component of the digital tw
 2. On your development computer: [Build a Python environment zip file](#build-a-python-environment-zip-file)
 3. Create a [Role](#create-a-role) with Policies for a Lambda function
 4. Create a [Lambda function](#create-a-lambda-function) that assumes this role, incorporating the Python environment from above
-5. Create an [API Gateway trigger](create-an-api-gateway-trigger) for the Lambda
-6. Configure Twilio [credentials and code](configure-credentials-and-code) for the Lambda to use when it runs
-7. Test [communication in both directions](test-communication-in-both-directions) 'cloud <--> IOT device' (Arduino in this case)
+5. Create an [API Gateway trigger](#create-an-api-gateway-trigger) for the Lambda
+6. Configure Twilio [credentials and code](#configure-credentials-and-code) for the Lambda to use when it runs
+7. Test [communication in both directions](#test-communication-in-both-directions) 'cloud <--> IOT device' (Arduino in this case)
 8. Add a [DynamoDB table](#add-a-dynamodb-table) to store data from the IOT device(s)
-9. Add a non-IOT [API call](add-an-api-call) to the cloud environment
+9. Add a non-IOT [API call](#add-an-api-call) to the cloud environment
 
 
 ## AWS Account
