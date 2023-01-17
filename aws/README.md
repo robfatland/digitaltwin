@@ -406,9 +406,22 @@ with.
 [Top](#aws)
 
 
-This is a placeholder section. The idea here is to write code into the Lambda that supports programmatic
-queries from the development system. This enables us to pull data subsets or check system health without
-having to log in to the AWS console. 
+This section is intended to cover three important functions. 
+
+
+- Debug the cloud data system functionality independent of the IOT Sensor devices
+- Query the cloud data system (get data subsets) using code
+- Check system status; also from code
+
+
+While 'from code' is the goal we have a simpler approach on hand *first*. 
+
+
+The 'wrap your mind around it' concept is that the API Gateway provides us with a URL; so we
+should be able to begin using this via copy-paste-modify in a browser address bar. We want to
+receive confirmation message from the Lambda (serverless) function in reply. 
+
+
 
 
 
