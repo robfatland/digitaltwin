@@ -1,0 +1,266 @@
+```
+#include <DFRobot_SIM7000.h>
+
+char sensor = 'c';
+
+#define CTRL_Z                        0x1a
+#define MODEM_TX                         7
+#define MODEM_RX                         8
+#define IP_GATEWAY            "100.64.0.1"
+
+SoftwareSerial     modemSerial(MODEM_RX, MODEM_TX);
+DFRobot_SIM7000    sim7000(&modemSerial);
+static int         lightSensorPin = A0;
+static int         lightTransmitPin = 10;
+static int         nth = 5;
+bool               runHealthCheck;
+static char        writePtr;
+char               msg[64], readout[64];
+
+
+bool modem_script(const __FlashStringHelper *script, char *purpose, uint16_t cmd_delay = 1000) {
+
+    Serial.println("modem_script() running, purpose:");
+    Serial.println(purpose);
+
+    char buffer1[128], buffer2[64];
+    bool result = true;
+
+    if (!sim7000.checkSIMStatus()) { 
+      Serial.println("sim7000.checkSimStatus() fail");
+      return false; 
+    }
+    Serial.println("sim7000.checkSimStatus() success");
+
+    const char *command = (PGM_P) script;
+    const char *response = strchr_P(command, '\0') + 1;
+
+    int nCmdsRun = 0;
+    char cmdStatus[64];
+
+    while (true) {
+        char cmd0 = pgm_read_byte(command);
+        char rsp0 = pgm_read_byte(response);
+        if (cmd0 == '\0' && rsp0 == '\0') { 
+            Serial.println("modem script breaking on cmd 0 rsp 0");
+            break; 
+        }
+
+        char i;
+        memset(buffer1, 0, 128);
+        memset(buffer2, 0,  64);
+
+        // CEREG checks cellular connection
+        if (cmd0 == '\x01' && rsp0 == '\x01') {
+            Serial.println("modem script to run CEREG");
+
+            // Wait for network connection
+            sim7000.sendCmd("AT+CEREG?\r\n");
+            sim7000.readBuffer(buffer1, 128, 1000);
+            Serial.print("CEREG loop...");
+            // Two possible good responses to CEREG? are 0,1 and 0,5
+            if (strstr(buffer1, "+CEREG: 0,1") == NULL && strstr(buffer1, "+CEREG: 0,5") == NULL) { 
+                delay(1000); 
+                continue; 
+            }
+        } 
+        else {
+            for (i = 0; i < 3; i++) {
+                strcpy_P(buffer1, (PGM_P)command);
+                Serial.println(buffer1);
+                if (response[0]) {
+                    strcpy_P(buffer2, (PGM_P)response);
+                    result = sim7000.checkSendCmd(buffer1, buffer2);
+                    if (!result) { delay(300); continue; }
+                } 
+                else {
+                    sim7000.sendCmd(buffer1);
+                    sim7000.readBuffer(buffer1, 100, 1000);
+                }
+                break;
+            }
+            if (i == 3) { return false; }
+            delay(cmd_delay);
+        }
+        command = strchr_P((PGM_P)response, '\0') + 1; // ratchet to next command
+        response = strchr_P((PGM_P)command, '\0') + 1;
+        
+        nCmdsRun += 1;
+        sprintf(readout, "script cmd %d: %s", nCmdsRun, buffer1);
+        Serial.println(readout);
+    }
+    return true;
+}
+
+bool modem_init() {
+    const __FlashStringHelper *INIT_CMDS = F(
+        "ATE0\r\n\0" "OK\0" // Echo off
+        "AT+CMEE=2\r\n\0" "OK\0"
+        "AT+CMNB=1\r\n\0" "OK\0"
+        "AT+CNMP=38\r\n\0" "OK\0"
+        "AT+CIPMUX=1\r\n\0" "OK\0"
+        // STATE: IP INITIAL
+        "AT+CGDCONT=1,\"IP\",\"super\"\r\n\0" "OK\0"
+        "AT+CSTT=\"super\",\"\",\"\"\r\n\0" "OK\0"
+        "\x01\0" "\x01\0" // AT+CEREG? -> +CEREG: 0,5 or +CEREG: 0,1
+        // STATE: IP START
+        "AT+CIICR\r\n\0" "OK\0"
+        // STATE: IP GPRSACT
+        "AT+CIFSR\r\n\0" "\0"
+        // STATE: IP STATUS
+        "AT+CLPORT=0,\"UDP\",6969\r\n\0" "OK\0"
+        "AT+CIPSTART=0,\"UDP\",\"" IP_GATEWAY "\",\"6969\"\r\n\0" "OK\0"
+        // STATE: CONNECT OK
+        "AT+CIPHEAD=1\r\n\0" "OK\0" // Identify data packets and their length
+        "\0" "\0"
+    );
+    int msReturn = modem_script(INIT_CMDS, "modem init");
+    Serial.println("modem_script() done");
+    return msReturn;
+}
+
+bool confirmOpenConnection() {
+    char buffer[128];
+    const char *cmd = "AT+CIPSTATUS=0\r\n";
+    memset(buffer, 0, 64);
+    sim7000.sendCmd(cmd);
+    sim7000.readBuffer(buffer, 128, 1000);
+    Serial.print("Connection state: ");
+    Serial.println(buffer);
+
+    return strstr(buffer, "\"CONNECTED\"") != NULL;
+}
+
+// sendUDP() reports a payload string up to the sky
+bool sendUDP(const char *payload, size_t len, char *remark) {
+    static char listenBuffer[128];
+    static char lenstring[8];
+    sprintf(lenstring, "%d", len);
+
+    bool result = false;
+    char buffer[64];
+    char *cursor = buffer;
+
+    String cmd(F("AT+CIPSEND=0,"));
+    cmd.concat(lenstring);
+    cmd.concat("\r\n");
+    sim7000.sendCmd(cmd.c_str());
+    modemSerial.flush();
+    memset(buffer, 0, 64);                         // * Needs documentation... start with 'zero "buffer"'
+    sim7000.readBuffer(buffer, 64, 1000);          // * reads at most 64 bytes; timeout 1 sec
+    if (strstr(buffer, ">") != NULL) {             // * strstr() finds string anywhere within string
+        for (size_t idx = 0; idx < len; idx++) { 
+            modemSerial.write(payload[idx]); 
+        }
+        modemSerial.write(CTRL_Z);                            //     behaves as EOM
+        modemSerial.flush();
+        memset(buffer, 0, 64);
+        sim7000.readBuffer(buffer, 64, 1000);
+        result = strstr(buffer, "SEND OK") != NULL;
+    }
+
+    Serial.println('post sendUDP() transmit, pre-delay');
+    Serial.flush();
+
+
+    delay(100);
+
+
+    Serial.println('after pause: starting sendUDP() reply scan');
+    Serial.flush();
+
+
+    writePtr = 0;
+    while (modemSerial.available()) {   // modem has at least one char for the Arduino           
+        char in = modemSerial.read();
+        listenBuffer[writePtr++] = in;
+    }
+    if (writePtr > 0) {
+        Serial.println("write pointer budged:");
+        // listenBuffer[writePtr] = '\0';
+        Serial.println(listenBuffer);
+        Serial.flush();
+        for (int i = 0; i < 3; i++){
+            digitalWrite(lightTransmitPin, HIGH);
+            delay(400);
+            digitalWrite(lightTransmitPin, LOW);
+            delay(200);
+        }
+    }
+    else {
+        Serial.println("no evidence of inbound msg");
+        Serial.flush();
+    }
+
+
+    if (writePtr > 3){
+        Serial.println("Attempting to parse inbound msg...");
+        Serial.flush();
+        if (listenBuffer[16] == 'A' && listenBuffer[17] == 'C' && listenBuffer[18] == 'K'){
+            Serial.println('ACK');
+            digitalWrite(lightTransmitPin, LOW); 
+        }
+        else if (listenBuffer[16] == 'L' && listenBuffer[17] == 'I' && listenBuffer[18] == 'G'){
+            Serial.println('LIG');
+            digitalWrite(lightTransmitPin, HIGH); 
+        }
+        else {
+            Serial.println('no match?');
+            digitalWrite(lightTransmitPin, LOW); 
+        }
+    }
+
+    Serial.println('completed sendUDP() reply scan');
+    Serial.flush();
+
+    while (true) {
+        if (sim7000.checkSendCmd("AT\r\n", "OK")) { break; }
+        modemSerial.write(CTRL_Z); // ctrl+z
+        modemSerial.flush();
+        Serial.println('check all clear...');
+        delay(300);
+    }
+
+    return result;
+}
+
+void setup(void) { 
+    pinMode(lightTransmitPin, OUTPUT);
+    delay(2000);
+    Serial.begin(9600);
+    Serial.println("\n\n\nsetup() Serial ok; now ~10 seconds modem ON");
+    modemSerial.begin(19200);
+    if (!sim7000.turnON()) { 
+        Serial.println("modem power on fail"); 
+    }
+    else {
+        Serial.println("modem power on success");
+    }
+    
+    while (true) {
+        if (sim7000.setBaudRate(19200)) { break; }
+        delay(1000);
+        Serial.println("  bump serial modem baud up to 19200");
+    }
+    Serial.println("baud 19200 ok; connecting to network.......\n");
+    if (modem_init()) {
+        Serial.println("modem_init() ok");
+    }
+    sprintf(msg, "%c:awake", sensor);
+    int wake_return = sendUDP(msg, 7, "sensor announce awake");
+    if (!wake_return){ 
+        Serial.println("sendUDP(awake) return false..."); 
+    }
+    else {
+        Serial.println("sendUDP(awake) return true; setup() done");
+    }
+}
+
+void loop() {
+    int analogValue = analogRead(lightSensorPin);
+    sprintf(msg, "sim-%c data %d", sensor, analogValue);           // do not change this format
+    sendUDP(msg, strlen(msg), "loop adc");
+    sprintf(readout, "msg `%s` length %d      time %d", msg, strlen(msg), millis());
+    Serial.println(readout);
+}
+```
