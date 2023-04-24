@@ -1,4 +1,4 @@
-# Azure
+# Azure is a copy of AWS that I only *just* started translating
 
 
 ## Introduction
